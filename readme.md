@@ -47,8 +47,8 @@ OSPI-Pakete, sondern beruecksichtigen auch den Build-Prozess.
 ### Amazon Corretto ###
 Amazon Corretto ist eine kostenlose, plattformübergreifende und produktionsbereite 
 Distribution des Open Java Development Kit (OpenJDK). Corretto wird von langfristigem
-Support begleitet, der Leistungsund Sicherheitsverbesserungen umfassen wird. 
-Corretto ist als mit dem Java SE-Standard kompatibel zertifiziert und wird 
+Support begleitet, der Leistungs- und Sicherheitsverbesserungen umfassen wird. 
+Corretto ist mit dem Java SE-Standard kompatibel zertifiziert und wird 
 intern bei Amazon für viele Produktionsservices verwendet.
 
 
@@ -89,7 +89,7 @@ json-Files anzupassen.
 Ohne explizite Angabe eines json-Files wird **<code>spec.json</code>** verwendet.
 Dies erstellt generische Pakete ohne Angabe der Major-Release in der ProductId. 
 Die <code>spec_corretto*.json</code> resultieren in Paketen, in denen
-Die Major-Release Bestandteil der ProductId ist. Dies ermoeglicht die parallele
+die Major-Release Bestandteil der ProductId ist. Dies ermoeglicht die parallele
 Installation mehrerer Releases.
 
 
@@ -369,4 +369,4 @@ weiterer freier Grafiken erstellt.
 Bekannte Fehler:
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-03-21 14:02:49 +0100
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-03-25 18:00:00 +0100
