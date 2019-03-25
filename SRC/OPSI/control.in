@@ -1,0 +1,120 @@
+{{! ========================================================================== }}
+{{!  Amazon Corretto Control                                                   }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-03-22 09:59:28 +0100           }}
+{{! ========================================================================== }}
+[Package]
+version: {{O_PKG_VER}}
+depends: 
+incremental: False
+
+[Product]
+type: localboot
+id: {{TESTPREFIX}}{{ORGPREFIX}}{{O_SOFTWARE}}
+name: {{O_SOFTWARE_NAME}}
+description: Multiplatform, production-ready distribution of OpenJDK by Amazon
+
+ WebSite: {{O_SOFTWARE_WEBSITE}}
+advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
+ Organization: {{ORGNAME}}
+ Release date: {{O_RELEASE_DATE}}
+version: {{O_SOFTWARE_VER}}
+priority: 0
+licenseRequired: False
+productClasses: 
+setupScript: setup.opsiscript
+uninstallScript: uninstall.opsiscript
+updateScript: 
+alwaysScript: 
+onceScript: 
+customScript: 
+userLoginScript: 
+
+{{^ifdef_x64_only}}
+[ProductProperty]
+type: unicode
+name: install_architecture
+multivalue: False
+editable: False
+description: which architecture (32/64 bit) should be installed
+values: ["32 bit", "64 bit", "sysnative"]
+default: ["sysnative"]
+{{/ifdef_x64_only}}
+
+{{#ifdef_property_language}}
+[ProductProperty]
+type: unicode
+name: default_language
+multivalue: False
+editable: False
+description: application default language
+values: ["de", "en-GB", "en-US"]
+default: ["en-US"]
+{{/ifdef_property_language}}
+
+[ProductProperty]
+type: bool
+name: set_env_java_home
+description: Set Environment JAVA_HOME and PATH to InstallDir coretto?
+default: True
+
+
+[ProductProperty]
+type: unicode
+name: custom_post_install
+multivalue: False
+editable: True
+description: Define filename for include script in custom directory after installation
+values: ["custom_test.opsiinc", "none", "post-install.opsiinc"]
+default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: custom_post_uninstall
+multivalue: False
+editable: True
+description: Define filename for include script in custom directory after deinstallation
+values: ["custom_test.opsiinc", "none", "post-uninstall.opsiinc"]
+default: ["none"]
+
+[ProductProperty]
+type: unicode
+name: log_level
+multivalue: False
+editable: False
+{{#ifdef_testing}}
+description: Loglevel for this package ({{DEFAULT_TESTING_LOGLEVEL}})
+{{/ifdef_testing}}
+{{^ifdef_testing}}
+description: Loglevel for this package ({{DEFAULT_RELEASE_LOGLEVEL}})
+{{/ifdef_testing}}
+values: ["default", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+default: ["default"]
+
+{{#ifdef_property_kill_running}}
+[ProductProperty]
+type: bool
+name: kill_running
+description: kill running instance (for software on_demand)
+default: False
+
+[ProductProperty]
+type: unicode
+name: kill_applic
+multivalue: True
+editable: True
+description: Instead of killing only applications of this package, kill also these running applications; requires "kill_running. Use suffix '.exe' or '%' as wildcard. Separate applications by pipe symbol '|'.
+values: [""]
+default: [""]
+{{/ifdef_property_kill_running}}
+
+[ProductProperty]
+type: bool
+name: uninstall_before_setup
+description: Run uninstall before (re)installation; installer will remove previous setup anyway; use with caution!
+default: True
+
+
+
+[Changelog]
+{{! The changelog is outsourced  to a separate file in the root of this project. }}
+{{! It will be included on building the OPSI package. }}

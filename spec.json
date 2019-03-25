@@ -1,0 +1,42 @@
+{  
+	"_": "=== OPSI package variables ===",
+	"O_PKG_VER"         : "1",
+	"O_RELEASE_DATE"    : "{{M_TODAY}}",
+	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
+	
+	"O_SOFTWARE"        : "corretto",
+	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
+	"O_SOFTWARE_VER"    : "11.0.2.9.3",		
+	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
+	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html",
+	"O_SOFTWARE_CHANGES": "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/change-log.html",
+	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
+
+
+	"_":"=== conditions ===",
+	"ifdef_x64_only"				:true,
+	"ifdef_auto_download"           :true,
+	
+	"ifdef_testing"                 :{{M_TESTING}},	
+	"ifdef_allinc"                  :{{M_ALLINC}},
+	"ifdef_keepfiles"				:{{M_KEEPFILES}},	
+	
+	"ifdef_property_language"       :false,
+	"ifdef_property_kill_running"   :true,
+	"ifdef_property_desktop_link"   :false,
+
+	
+	"_":"=== some tuning ===",
+	"O_USE_INSTALLER"          : "MSI",
+	"DEFAULT_TESTING_LOGLEVEL" : "7",
+	"DEFAULT_RELEASE_LOGLEVEL" : "5",
+
+	
+	"_":"=== given by make ===",
+	"STAGE"             : "{{M_STAGE}}",
+	"TESTPREFIX"	    : "{{M_TESTPREFIX}}",
+	"ORGPREFIX"         : "{{M_ORGPREFIX}}",
+	"ORGNAME"           : "{{M_ORGNAME}}",	
+	
+	"_":""
+}

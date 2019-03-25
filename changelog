@@ -1,0 +1,5 @@
+amazon-corretto-(8|11):
+	* Initial package
+	* extended helperc.opsifunc (v1.3)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 16:59:43 +0100
+

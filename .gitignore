@@ -1,0 +1,11 @@
+*.opsi
+*.zsync
+*.md5
+*.ins~
+*~
+*.log
+BUILD/
+PACKAGES/
+DOWNLOAD/
+package_download.sh
+product_downloader.sh
