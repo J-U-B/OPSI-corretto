@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 16:17:54 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:36:35 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -177,6 +177,7 @@ Set $pr_DesktopLink$		= "false"
 Set $CustomPostInstall$ 	= getProductProperty("custom_post_install","none")
 Set $CustomPostUninstall$ 	= getProductProperty("custom_post_uninstall","none")
 Set $pr_SetEnv_JavaHome$	= getProductProperty("set_env_java_home","true")
+Set $pr_set_jar_handler$	= getProductProperty("set_jar_handler","true")
 
 ;-----------------------------------------------------------
 ;*** additional paths, binaries, and booleans
@@ -284,7 +285,7 @@ set $ProductVersionFilter$ = $ProductMajor$ + ".*"
 
 
 ;-------------------------------------------
-; smples for known installers
+; samples for known installers
 ;-------------------------------------------
 ; amazon-corretto-11.0.2.9.3-windows-x64.msi
 ; amazon-corretto-8.202.08.2-windows-x64.msi

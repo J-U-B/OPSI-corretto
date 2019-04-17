@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 16:59:33 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 13:39:45 +0200
 ;=====================================================================
 
 
@@ -190,6 +190,11 @@ if ($ExitCode$ = "0") and not ($Uninst_RegDir$ = "")
 		endif
 endif
 
+if ($pr_set_jar_handler$ = "true")
+	; unset FTYPE for JAR files an deASSOC the handler
+	ShellInAnIcon_UnsetFtypeAndAssoc
+endif
+
 ; workaround for faulty MSI:
 ;if Set $pr_SetEnv_JavaHome$	= "true"
 	set $Env_Java_Home$ = getEnvVar("JAVA_HOME")
@@ -210,6 +215,13 @@ $UninstallString$  $Uninst_Opts$
 [Files_del_InstallDir]
 ;======================================================================
 delete -sfc "$Uninst_RegDir$"
+
+
+;======================================================================
+[ShellInAnIcon_UnsetFtypeAndAssoc]
+;======================================================================
+assoc .jar=
+ftype $StrippedProductId$.JarFile=
 
 
 ;=====================================================================

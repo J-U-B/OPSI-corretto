@@ -1,20 +1,20 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "1",
+	"O_PKG_VER"         : "2",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
-	"O_SOFTWARE"        : "corretto8",
-	"O_SOFTWARE_NAME"   : "Amazon Corretto 8",
-	"O_SOFTWARE_VER"    : "8.202.08.2",	
+	"O_SOFTWARE"        : "corretto11",
+	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
+	"O_SOFTWARE_VER"    : "11.0.3.7.1",	
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
-	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html",
-	"O_SOFTWARE_CHANGES": "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/change-log.html",
+	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html",
+	"O_SOFTWARE_CHANGES": "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/change-log.html",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
 	
 
 	"_":"=== conditions ===",
-	"ifdef_x64_only"				:false,
+	"ifdef_x64_only"				:true,
 	"ifdef_auto_download"           :true,
 	
 	"ifdef_testing"                 :{{M_TESTING}},	

@@ -3,8 +3,8 @@
 # Download files from vendor
 # Product: AMAZON CORRETTO
 #
-# Version 1.5
-# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-03-21 17:33:37 +0100
+# Version 1.5.1
+# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:10:20 +0200
 #=======================================================================
 # link examples:
 #	INNO:
@@ -73,6 +73,13 @@ if [ "{{O_USE_INSTALLER}}" = "MSI" ]; then
 	### Since they may change, we have to parse the file.
 	declare -A URL=()
 	for LNK in $( ${DOWNLOADER} ${DL_OUT} - {{O_SOFTWARE_DL}} | grep "amazon-corretto-.*\.msi" | sed -e 's/^.*href="\([^"]*\).*$/\1/g' ); do
+		CUR_DL=$( echo $LNK | sed -e 's/^.*corretto-\(.*\)-windows.*$/\1/')
+		if [ ! "$CUR_DL" = "$VERSION" ]; then
+			echo -e "*W*  Available package is newer [$CUR_DL] than the requested version [$VERSION]"
+			CUR_LNK=${LNK}
+			LNK=$(echo $LNK | sed -e "s/$CUR_DL/$VERSION/g")
+			echo -e "*I*  Trying to retrieve the requested version:\n\t\t${LNK}\n\tinsted of\n\t\t${CUR_LNK}"
+		fi
 		ARCH=$(echo $LNK| sed -e 's/^.*-\(x[0-9]*\)\.msi/\1/');
 		[ "$ARCH" = "x86" ] && ARCH="32"
 		[ "$ARCH" = "x64" ] && ARCH="64"

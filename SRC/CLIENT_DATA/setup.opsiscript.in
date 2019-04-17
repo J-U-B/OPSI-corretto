@@ -2,7 +2,7 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-21 16:55:06 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 14:12:41 +0200
 ;======================================================================
 
 ;======================================================================
@@ -80,7 +80,28 @@ else
 	;	isFatalError
 	;endif
 	
+	
+	if ($pr_set_jar_handler$ = "true")
+		; set FTYPE for JAR files an ASSOC the handler
+		
+		set $MainBin$ = ""
+		set $ResultList$ = shellCall('dir /b "' + $InstallDir$ +'"')
+		if count($ResultList$) INT>= "1"
+			set $MainBin$ = $InstallDir$ + takeString("0",$ResultList$) + "\bin\javaw.exe"
+		else
+			logError "Error detecting directory for main binary"
+		endif
 
+		if (not($MainBin$ = "") AND FileExists($MainBin$))
+			comment "File main binary found at: " + $MainBin$
+			comment "Setting FTYPE and ASSOC"
+			ShellInAnIcon_SetFtypeAndAssoc
+		else
+			logError "Path for main binary is empty or file not found: [" + $MainBin$ + "]"
+		endif		
+	endif
+	
+	
 	{{#ifdef_property_desktop_link}}
 	;=== create desktop link if requested
 	if ($pr_DesktopLink$ = "true")
@@ -117,6 +138,12 @@ $Installer$ $INNO_Inst_Opts$
 ;======================================================================
 $MSI_Inst_Cmd$
 
+
+;======================================================================
+[ShellInAnIcon_SetFtypeAndAssoc]
+;======================================================================
+ftype $StrippedProductId$.JarFile="$MainBin$" -jar "%%1" %%*
+assoc .jar=$StrippedProductId$.JarFile
 
  
 ;=====================================================================

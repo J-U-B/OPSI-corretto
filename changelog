@@ -1,4 +1,11 @@
-amazon-corretto-(8|11):
+amazon-corretto-(8.212.04.1|11.0.3.7.1)-2:
+	* product updates
+	* new property: set_jar_handler
+	* set/unset FTYPE and ASSOC for JAR file by property
+	* download requested version even if current version is newer
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:51:37 +0200
+
+amazon-corretto-(8|11)-1:
 	* Initial package
 	* extended helperc.opsifunc (v1.3)
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 16:59:43 +0100

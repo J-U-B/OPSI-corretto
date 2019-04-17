@@ -19,7 +19,7 @@
   * [Nomenklatur](#nomenklatur)
 * [Lizenzen](#lizenzen)
   * [Dieses Paket](#licPaket)
-  * [Oracle-Lizenzen](#licOracle)
+  * [Amazon-Corretto-Lizenzen](#licAmazonCorretto)
   * [psDetail](#licPsDetail)
   * [GetRealName](#licGetRealName)
   * [7zip](#lic7zip)
@@ -212,6 +212,7 @@ koennen die verfuegbaren Properties abweichen.
 | Property | Type | Values | Default  | Multivalue | Editable | Description | Anmerkung |
 |----------|:----:|--------|----------|:----------:|:--------:|-------------|------|
 | set_env_java_home | bool |  | True | | | Set Environment JAVA_HOME and PATH to InstallDir of jdk or jre? |  |
+| set_jar_handler | bool |  | True | | | Set Corretto to default handler for JAR files? (unset on removal) |  |
 | install_architecture | unicode | "32 bit", "64 bit", "sysnative" | "sysnative" | False | False | which architecture (32/64 bit) should be installed |  |
 | custom_post_install | unicode | "none", "custom_test.opsiinc", "post-install.opsiinc" | "none" | False | True | Define filename for include script in custom directory after installation |  |
 | custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
@@ -282,9 +283,9 @@ Hilfsprogramme. Diese unterliegen ihren jeweiligen Lizenzen.
 
 
 
-<div id="licAmazon"></div>
+<div id="licAmazonCorrettoo"></div>
 
-### Amazon-Lizenzen ###
+### Amazon-Corretto-Lizenzen ###
 
 > Corretto is released under the same open source license as OpenJDK, which is 
 > licensed under the GNU Public License version 2 with the Class Path Exception 
@@ -369,4 +370,4 @@ weiterer freier Grafiken erstellt.
 Bekannte Fehler:
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-03-25 18:00:00 +0100
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-04-17 13:44:26 +0200

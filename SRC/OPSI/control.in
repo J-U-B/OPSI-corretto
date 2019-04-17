@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  Amazon Corretto Control                                                   }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-03-22 09:59:28 +0100           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-04-17 12:34:36 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -55,6 +55,13 @@ default: ["en-US"]
 type: bool
 name: set_env_java_home
 description: Set Environment JAVA_HOME and PATH to InstallDir coretto?
+default: True
+
+
+[ProductProperty]
+type: bool
+name: set_jar_handler
+description: Set Corretto to default handler for JAR files? (unset on removal)
 default: True
 
 
