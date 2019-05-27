@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:35:04 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:35:54 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -19,6 +19,7 @@ DefVar $bPSDetail$
 DefVar $CheckBin$
 DefVar $CheckProcess$
 DefVar $currentLogLevel$
+DefVar $CurrentVersion$
 DefVar $CustomPostInstall$
 DefVar $CustomPostUninstall$
 DefVar $DisplayName$
@@ -30,6 +31,7 @@ DefVar $ExitCode$
 DefVar $FullProductId$
 DefVar $GETREALNAME$
 DefVar $Img_BaseName$
+DefVar $Img_Config$
 DefVar $Img_Install$
 DefVar $Img_Install_Custom$
 DefVar $Img_Plugins$
@@ -52,7 +54,9 @@ DefVar $isINNO$
 DefVar $isMSI$
 ; DefVar $isNSIS$
 DefVar $isO4I$
+DefVar $JAVA_HOME$
 DefVar $JAVA_VER$
+DefVar $JAVA_VER_FULL$
 DefVar $Kill_Running$
 DefVar $LogDir$
 DefVar $LogLevelDefault$

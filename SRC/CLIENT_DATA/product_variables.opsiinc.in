@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:36:35 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:43:38 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -91,6 +91,7 @@ if ($isO4I$ = "true")
 else
 	set $Img_Install$		= "%ScriptPath%\images\" + $Img_BaseName$ + "_install.png"
 endif
+Set $Img_Config$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_config.png"
 set $Img_Install_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_install_custom.png"
 Set $Img_Uninstall$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall.png"
 Set $Img_Uninstall_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall_custom.png"
@@ -243,11 +244,13 @@ Set $UninstallLog$		= $LogDir$ + "\"+$FullProductId$+"_uninstall.log"
 ;===========================================================
 Set $InstallerType$   		= "{{O_USE_INSTALLER}}"
 
-Set $JAVA_VER$		= "{{O_SOFTWARE_VER}}"
-Set $ProductMajor$		= takeString(0, splitString ($JAVA_VER$,"."))
+Set $JAVA_VER_FULL$		= "{{O_SOFTWARE_VER}}"
+Set $TempList$			= splitString ($JAVA_VER_FULL$,".")
+Set $JAVA_VER$			= takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$)
+Set $ProductMajor$		= takeString(0, splitString ($JAVA_VER_FULL$,"."))
 
-Set $SrcDir$		= "%ScriptPath%\files\" 
-Set $PathPrefix$	= "Corretto" + $ProductMajor$ + "\"
+Set $SrcDir$			= "%ScriptPath%\files\" 
+Set $PathPrefix$		= "Corretto" + $ProductMajor$ + "\"
 
 ;Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$ + stringReplace($ProductName$," ", "") + "\"
 ;Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$ + $ProductName$ + "\"

@@ -2,7 +2,7 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 14:12:41 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:44:25 +0200
 ;======================================================================
 
 ;======================================================================
@@ -52,6 +52,7 @@ else
 		isFatalError
 	endif
 	
+	;=== run the installer
 	comment "Start " + $InstallerType$ +" setup program"
 	Switch $InstallerType$
 		Case "INNO"
@@ -80,16 +81,25 @@ else
 	;	isFatalError
 	;endif
 	
+	;=== configure settings and workarounds:
+	ShowBitmap $Img_Config$ $ProductName$
+	
+	set $ResultList$ = shellCall('dir /b "' + $InstallDir$ +'"')
+	if count($ResultList$) INT>= "1"
+		set $JAVA_HOME$ = $InstallDir$ + takeString("0",$ResultList$)
+	else
+		set $JAVA_HOME$ = ""
+		logError "Error detecting JavaHome directory"
+	endif	
 	
 	if ($pr_set_jar_handler$ = "true")
 		; set FTYPE for JAR files an ASSOC the handler
 		
 		set $MainBin$ = ""
-		set $ResultList$ = shellCall('dir /b "' + $InstallDir$ +'"')
-		if count($ResultList$) INT>= "1"
-			set $MainBin$ = $InstallDir$ + takeString("0",$ResultList$) + "\bin\javaw.exe"
+		if not($JAVA_HOME$ = "")
+			set $MainBin$ = $JAVA_HOME$ + "\bin\javaw.exe"
 		else
-			logError "Error detecting directory for main binary"
+			logError "No path for main binary (missing JavaHome)"
 		endif
 
 		if (not($MainBin$ = "") AND FileExists($MainBin$))
@@ -99,6 +109,18 @@ else
 		else
 			logError "Path for main binary is empty or file not found: [" + $MainBin$ + "]"
 		endif		
+	endif
+	
+	if ($ProductMajor$ = "11") and not ($JAVA_HOME$ = "")
+		; fix some missing registry keys in HKLM\SOFTWARE\JavaSoft
+		Switch $sw_arch$
+			Case "32"
+				Registry_Fix_JavaSoft /32Bit
+			EndCase
+			Case "64"
+				Registry_Fix_JavaSoft /64Bit
+			EndCase
+		EndSwitch	
 	endif
 	
 	
@@ -182,3 +204,17 @@ set_link
 	icon_file:
 	icon_index:
 end_link
+
+
+;=====================================================================
+[Registry_Fix_JavaSoft]
+;=====================================================================
+openkey [HKLM\SOFTWARE\JavaSoft\Java Development Kit\$JAVA_VER$]
+set "JavaHome"="$JAVA_HOME$"
+openkey [HKLM\SOFTWARE\JavaSoft\Java Development Kit]
+set "CurrentVersion"="$JAVA_VER$"
+
+openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER$]
+set "JavaHome"="$JAVA_HOME$"
+openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment]
+set "CurrentVersion"="$JAVA_VER$"

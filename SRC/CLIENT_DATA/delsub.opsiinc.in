@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 13:39:45 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:46:15 +0200
 ;=====================================================================
 
 
@@ -195,6 +195,24 @@ if ($pr_set_jar_handler$ = "true")
 	ShellInAnIcon_UnsetFtypeAndAssoc
 endif
 
+;remove variables from HKLM\SOFTWARE\JavaSoft
+if ($ProductMajor$ = "11")
+	Switch $Uninst_Arch$
+		Case "x32"
+			set $CurrentVersion$ = GetRegistryStringValue32("[HKLM\SOFTWARE\JavaSoft\Java Runtime Environment] CurrentVersion")
+			if not($CurrentVersion$="") and (strPos($Inst_Ver$, $CurrentVersion$) = "1")
+				Registry_Cleanup_JavaSoft /32Bit
+			endif
+		EndCase
+		Case "x64"
+			set $CurrentVersion$ = GetRegistryStringValue64("[HKLM\SOFTWARE\JavaSoft\Java Runtime Environment] CurrentVersion")
+			if not($CurrentVersion$="") and (strPos($Inst_Ver$, $CurrentVersion$) = "1")
+				Registry_Cleanup_JavaSoft /64Bit
+			endif
+		EndCase
+	EndSwitch	
+endif
+
 ; workaround for faulty MSI:
 ;if Set $pr_SetEnv_JavaHome$	= "true"
 	set $Env_Java_Home$ = getEnvVar("JAVA_HOME")
@@ -259,4 +277,17 @@ if not ("%app%" = "")
 	set $CheckProcess$  = "%app%"
 	sub_checkinstance
 endif
+
+
+;======================================================================
+[Registry_Cleanup_JavaSoft]
+;======================================================================
+openKey [HKLM\SOFTWARE\JavaSoft\Java Development Kit]
+deleteVar "CurrentVersion"
+deleteKey [HKLM\SOFTWARE\JavaSoft\Java Development Kit\$CurrentVersion$]
+
+openKey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment]
+deleteVar "CurrentVersion"
+deleteKey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$CurrentVersion$]
+
 

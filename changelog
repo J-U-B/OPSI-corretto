@@ -1,3 +1,8 @@
+amazon-corretto-(8.212.04.1|11.0.3.7.1)-3:
+	* write/delete registry keys (JavaSoft) for compatibility (only required for Corretto 11)
+	* separate image for software configuration
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 15:29:57 +0200
+
 amazon-corretto-(8.212.04.1|11.0.3.7.1)-2:
 	* product updates
 	* new property: set_jar_handler
