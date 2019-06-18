@@ -3,8 +3,8 @@
 # Download files from vendor
 # Product: AMAZON CORRETTO
 #
-# Version 1.5.1
-# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-04-17 12:10:20 +0200
+# Version 1.5.2
+# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-06-18 13:19:07 +0200
 #=======================================================================
 # link examples:
 #	INNO:
@@ -50,7 +50,7 @@ fi
 
 PROD="{{O_SOFTWARE}}"
 VERSION={{O_SOFTWARE_VER}}
-# BUILD={{O_SOFTWARE_BUILD}}
+BUILD={{O_SOFTWARE_BUILD}}
 # [[ -n "$PRODUCT_VERSION" ]] && VERSION=${PRODUCT_VERSION}
 [[ -z "$VERSION" ]] && ERR=220
 [[ "$VERSION" =~ "O_SOFTWARE_VER" ]] && ERR=221
@@ -58,12 +58,14 @@ if [ "$ERR" -gt 0 ]; then
 	echo "Error: cannot get software version"
 	exit $ERR
 fi
-#[[ -z "$BUILD" ]] && ERR=222
-#[[ "$BUILD" =~ "O_SOFTWARE_BUILD" ]] && ERR=223
-#if [ "$ERR" -gt 0 ]; then
-#	echo "Error: cannot get software build number"
-#	exit $ERR
-#fi
+# [[ -z "$BUILD" ]] && ERR=222
+[[ "$BUILD" =~ "O_SOFTWARE_BUILD" ]] && ERR=223
+if [ "$ERR" -gt 0 ]; then
+	echo "Error: cannot get software build number"
+	exit $ERR
+fi
+
+[[ -z "$BUILD" ]] && BUILD_ADD="" || BUILD_ADD="-${BUILD}"
 
 if [ "{{O_USE_INSTALLER}}" = "MSI" ]; then
 	#========== MSI ===============
@@ -74,10 +76,10 @@ if [ "{{O_USE_INSTALLER}}" = "MSI" ]; then
 	declare -A URL=()
 	for LNK in $( ${DOWNLOADER} ${DL_OUT} - {{O_SOFTWARE_DL}} | grep "amazon-corretto-.*\.msi" | sed -e 's/^.*href="\([^"]*\).*$/\1/g' ); do
 		CUR_DL=$( echo $LNK | sed -e 's/^.*corretto-\(.*\)-windows.*$/\1/')
-		if [ ! "$CUR_DL" = "$VERSION" ]; then
-			echo -e "*W*  Available package is newer [$CUR_DL] than the requested version [$VERSION]"
+		if [ ! "$CUR_DL" = "${VERSION}${BUILD_ADD}" ]; then
+			echo -e "*W*  Available package is newer [$CUR_DL] than the requested version [${VERSION}${BUILD_ADD}]"
 			CUR_LNK=${LNK}
-			LNK=$(echo $LNK | sed -e "s/$CUR_DL/$VERSION/g")
+			LNK=$(echo $LNK | sed -e "s/${CUR_DL}/${VERSION}${BUILD_ADD}/g")
 			echo -e "*I*  Trying to retrieve the requested version:\n\t\t${LNK}\n\tinsted of\n\t\t${CUR_LNK}"
 		fi
 		ARCH=$(echo $LNK| sed -e 's/^.*-\(x[0-9]*\)\.msi/\1/');

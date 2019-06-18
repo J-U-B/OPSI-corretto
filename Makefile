@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (JAVA)
-# Version: 2.1.4
+# Version: 2.1.5
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2018-10-26 11:52:17 +0200
+# 2019-06-18 09:08:51 +0200
 ############################################################
 
 .PHONY: header clean mpimsp dfn mpimsp_test dfn_test all_test all_prod all help download
@@ -94,8 +94,14 @@ endif
 #JAVA_RELEASE := $(shell grep '"O_SOFTWARE_MAJOR"' $(SPEC) | sed -e 's/^.*\s*:\s*\"\(.*\)\".*$$/\1/' )
 JAVA_VER     := $(shell grep '"O_SOFTWARE_VER"' $(SPEC)   | sed -e 's/^.*\s*:\s*\"\(.*\)\".*$$/\1/' )
 JAVA_RELEASE := $(shell echo $(JAVA_VER) | cut -f 1 -d "." )
-FILES_MASK := *-$(JAVA_VER)-windows-*.msi
-GREP_MASK  := amazon-corretto-$(JAVA_VER)-windows-.*\.msi
+JAVA_BUILD   := $(shell grep '"O_SOFTWARE_BUILD"' $(SPEC)   | sed -e 's/^.*\s*:\s*\"\(.*\)\".*$$/\1/' )
+ifeq (,$(JAVA_BUILD))
+	FILES_MASK := *-$(JAVA_VER)-windows-*.msi
+	GREP_MASK  := amazon-corretto-$(JAVA_VER)-windows-.*\.msi
+else
+	FILES_MASK := *-$(JAVA_VER)-$(JAVA_BUILD)-windows-*.msi
+	GREP_MASK  := amazon-corretto-$(JAVA_VER)-$(JAVA_BUILD)-windows-.*\.msi
+endif
 
 leave_err:
 	exit 1
@@ -104,6 +110,7 @@ var_test:
 	@echo "=================================================================="
 	@echo "* Java Release          : $(JAVA_RELEASE)"
 	@echo "* Java Version          : $(JAVA_VER)"
+	@echo "* Java Build            : $(JAVA_BUILD)"
 	@echo "* SPEC file             : [$(SPEC)]"
 	@echo "* Batteries included    : [$(ALLINC)] --> [$(ALLINCLUSIVE)]"
 	@echo "* Custom Name           : [$(CUSTOMNAME)]"
