@@ -1,6 +1,6 @@
 ;===============================================================================
 ; checkinstance.opsiinc
-; J. Boettge <boettge@mpi-halle.mpg.de>		2019-03-22 12:09:11 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>		2019-07-17 11:25:02 +0200
 ;===============================================================================
 
 ;===============================================================================
@@ -72,8 +72,11 @@ if ($bPSDetail$ = "true")
 		else
 			; logError $Proc_Cnt$+" running instance(s) of " + $CheckProcess$ + " found, but I'm not allowed to kill them."
 			; isFatalError "running instance"
-			logWarning $Proc_Cnt$ + " running instance(s) of " + $CheckBin$ + " found, but I'm not allowed to kill them."
-			isSuspended			
+			logWarning $Proc_Cnt$+" running instance(s) of " + $MainBin$ + " found, but I'm not allowed to kill them."
+			comment "DEFERRING ACTION"
+			Message "Deferring action for running application"
+			set $result$ = currentProductSetReport("deferred")
+			isSuspended
 		endif
 	else
 		if $Proc_Cnt$ = "0"

@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:43:38 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:24:46 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -13,6 +13,7 @@ Set $Version$         	= getValue("ProductVersion", $MAP$)
 Set $ActionRequest$		= getValue("actionrequest", $MAP$)
 Set $SystemType$      	= GetSystemType
 Set $NTVersion$   		= GetMsVersionInfo
+Set $Stage$				= lower("{{STAGE}}")
 
 requiredWinstVersion >= "4.11.6"
 
@@ -51,8 +52,10 @@ Set $LogLevelDefault$ = GetProductProperty("log_level","default")
 ;-----------------------------------------------------------
 ;*** detect testing package:
 ;-----------------------------------------------------------
-if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") = "0")
+;*** detect testing package:
+if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") = "0") and (strPos($Stage$,"test") = "0")
 	; not a testing package
+	comment "INFO: RELEASE package detected"
 	set $ProductId$  	= $FullProductId$ 
 	set $Testing$ 		= "false"
 	if ($LogLevelDefault$ = "default")
@@ -60,8 +63,12 @@ if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") =
 	endif
 else
 	; this is a testing package
-	comment "Prefix for testing package detected"
-	set $ProductId$  		= strPart($FullProductId$, calculate(strPos($FullProductId$,"_") + "+1"), strLength($FullProductId$))
+	comment "INFO: TESTING package detected"
+	if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") = "0")
+		set $ProductId$	= $FullProductId$
+	else
+		set $ProductId$	= strPart($FullProductId$, calculate(strPos($FullProductId$,"_") + "+1"), strLength($FullProductId$))
+	endif
 	set $Testing$ 		= "true"
 	if ($LogLevelDefault$ = "default")
 		set $LogLevelDefault$  	= "{{DEFAULT_TESTING_LOGLEVEL}}"
@@ -86,18 +93,30 @@ endif
 ;-----------------------------------------------------------
 ;set $Img_BaseName$ = $StrippedProductId$
 set $Img_BaseName$ = "corretto"
-if ($isO4I$ = "true")
-	set $Img_Install$		= "%ScriptPath%\images\" + $Img_BaseName$ + "_install_o4i.png"
+
+if (FileExists("%ScriptPath%\..\lib\icons\%installingProdName%.png"))
+	set $Img_Install$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	set $Img_Install_Custom$	= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Uninstall$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Uninstall_Custom$	= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Prepare$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Plugins$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Config$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
+	Set $Img_Update$			= "%ScriptPath%\..\lib\icons\%installingProdName%.png"
 else
-	set $Img_Install$		= "%ScriptPath%\images\" + $Img_BaseName$ + "_install.png"
+	if ($isO4I$ = "true")
+		set $Img_Install$		= "%ScriptPath%\images\" + $Img_BaseName$ + "_install_o4i.png"
+	else
+		set $Img_Install$		= "%ScriptPath%\images\" + $Img_BaseName$ + "_install.png"
+	endif
+	Set $Img_Config$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_config.png"
+	Set $Img_Install_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_install_custom.png"
+	Set $Img_Uninstall$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall.png"
+	Set $Img_Uninstall_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall_custom.png"
+	Set $Img_Prepare$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_prepare.png"
+	Set $Img_Plugins$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_plugins.png"
+	Set $Img_Update$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_update.png"
 endif
-Set $Img_Config$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_config.png"
-set $Img_Install_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_install_custom.png"
-Set $Img_Uninstall$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall.png"
-Set $Img_Uninstall_Custom$	= "%ScriptPath%\images\" + $Img_BaseName$ + "_uninstall_custom.png"
-Set $Img_Prepare$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_prepare.png"
-Set $Img_Plugins$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_plugins.png"
-Set $Img_Update$			= "%ScriptPath%\images\" + $Img_BaseName$ + "_update.png"
 
 comment "preparing..."
 ShowBitmap $Img_Prepare$ $ProductName$
@@ -142,7 +161,7 @@ if ($sw_arch$ = "64")
 	set $InstallBase$ = "%ProgramFiles64Dir%"
 else
 	; 32 bit software
-	set $InstallBase$ = EnvVar("ProgramFiles(x86)")
+	set $InstallBase$ = "%ProgramFiles32Dir%"
 endif
 
 if ($SystemType$="x32") and ($sw_arch$="64")
@@ -258,7 +277,9 @@ Set $PathPrefix$		= "Corretto" + $ProductMajor$ + "\"
 Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$
 
 ; Set $CheckBin$      	= "bin\" + $StrippedProductId$ +".exe"
-Set $CheckBin$      	= "%\" + $PathPrefix$ + "%\%.exe"
+Set $CheckBin$      	= "%\" + $PathPrefix$ + "%\bin\%.exe"
+; Set $PathToExe$			= $InstallDir$ + $CheckBin$
+Set $PathToExe$			= $InstallDir$ + "%\bin\java.exe"
 
 ;-------------------------------------------------------
 ; filter for opsiServiceCall productOnClient_getObjects:
@@ -290,9 +311,9 @@ set $ProductVersionFilter$ = $ProductMajor$ + ".*"
 ;-------------------------------------------
 ; samples for known installers
 ;-------------------------------------------
-; amazon-corretto-11.0.2.9.3-windows-x64.msi
-; amazon-corretto-8.202.08.2-windows-x64.msi
-; amazon-corretto-8.202.08.2-windows-x86.msi
+; amazon-corretto-${Version}-windows-x64.msi
+; amazon-corretto-${Version}-windows-x64.msi
+; amazon-corretto-${Version}-windows-x86.msi
 ; $Version$  = O_SOFTWARE_VER
 
 Switch $sw_arch$

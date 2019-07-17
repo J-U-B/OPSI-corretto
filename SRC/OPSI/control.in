@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  Amazon Corretto Control                                                   }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-04-17 12:34:36 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-07-17 11:24:29 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -11,12 +11,13 @@ incremental: False
 type: localboot
 id: {{TESTPREFIX}}{{ORGPREFIX}}{{O_SOFTWARE}}
 name: {{O_SOFTWARE_NAME}}
-description: Multiplatform, production-ready distribution of OpenJDK by Amazon
-
- WebSite: {{O_SOFTWARE_WEBSITE}}
+description: • No-cost, multiplatform, production-ready distribution of OpenJDK by Amazon
+    • Kostenlose, plattformübergreifende, produktionsbereite Distribution des OpenJDK von Amazon
+    ___
+    WebSite: {{O_SOFTWARE_WEBSITE}}
 advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
- Organization: {{ORGNAME}}
- Release date: {{O_RELEASE_DATE}}
+    Organization: {{ORGNAME}}
+    Release date: {{O_RELEASE_DATE}}
 version: {{O_SOFTWARE_VER}}
 priority: 0
 licenseRequired: False
@@ -109,7 +110,7 @@ type: unicode
 name: kill_applic
 multivalue: True
 editable: True
-description: Instead of killing only applications of this package, kill also these running applications; requires "kill_running. Use suffix '.exe' or '%' as wildcard. Separate applications by pipe symbol '|'.
+description: Instead of killing only applications of this package, kill also these running applications; requires "kill_running. Use suffix '.exe' or '%' as wildcard.
 values: [""]
 default: [""]
 {{/ifdef_property_kill_running}}

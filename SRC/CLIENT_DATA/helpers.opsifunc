@@ -3,12 +3,15 @@
 ; 
 ; Some general helper functions...
 ;
-; Version: 	v1.3
+; Version: 	v1.4
 ; Author : 	J. Boettge <boettge@mpi-halle.mpg.de>
-; Date   :	2019-03-25 16:22:48 +0100
+; Date   :	2019-07-08 16:32:04 +0200
 ;==========================================================================
 ; Changelog
 ; ---------
+; v1.4
+; * added function currentProductSetReport
+
 ; v1.3
 ; * added function productVerGetOnClient
 ; * added function removeProductVerOnClientStatus
@@ -253,6 +256,49 @@ EndFunc
 
 
 ;-------------------------------------------------------------------------
+DefFunc currentProductSetReport(val $Report$: string) : string
+;-------------------------------------------------------------------------
+; set report string for current product
+; valid values for $Report$:
+; Return value:
+;		* empty string in case of no error
+;		* error message (result of opsiServiceCall) in any other case
+;-------------------------------------------------------------------------
+	DefVar $logLvl$
+	set $logLvl$=getLoglevel
+	setLogLevel=0
+	DefStringList $helper_MAP$
+	DefVar $prodId$
+	Set $helper_MAP$ = getProductMap
+    Set $prodId$ = getValue("id", $helper_MAP$)
+	DefStringList $outStream$
+	set $outStream$ = getReturnListFromSection("opsiServiceCall_setActionProgress")
+	set $result$ = takeString("0", $outStream$)
+	if ($result$='[]')
+		set $result$ = ''
+	endif
+	if strPos($result$,'-> ') INT> "0"
+		set $result$ = strPart($result$, "4", strLength($result$))
+	endif
+	if jsonIsObject($result$)
+		set $result$ = jsonAsObjectGetValueByKey($result$, "message")
+	endif
+	setLogLevel=$logLvl$
+
+;.................................................
+[opsiServiceCall_setActionProgress]
+;.................................................
+"method": "setProductActionProgress"
+"params": [
+"$prodId$"
+"%opsiserviceUser%"
+"$Report$"
+]
+;.................................................
+EndFunc
+
+
+;-------------------------------------------------------------------------
 DefFunc productGetOnClient(val $product$:string) : string
 ;-------------------------------------------------------------------------
 ; get object(s) for the given localBoot product(s) in this client
@@ -273,7 +319,7 @@ DefFunc productGetOnClient(val $product$:string) : string
 '{"clientId":"%opsiserviceUser%","productType":"LocalbootProduct","productId":"$product$"}'
 ]
 ;.................................................
-EndFunc	
+EndFunc
 
 
 ;-------------------------------------------------------------------------
@@ -288,7 +334,7 @@ DefFunc productVerGetOnClient(val $product$:string, val $pVersion$:string) : str
 	DefStringList $outStream$
 	set $outStream$ = getReturnListFromSection("opsiServiceCall_get_productOnClient")
 	set $result$ = takeString("0", $outStream$)
-	
+
 ;.................................................
 [opsiServiceCall_get_productOnClient]
 ;.................................................
@@ -298,7 +344,7 @@ DefFunc productVerGetOnClient(val $product$:string, val $pVersion$:string) : str
 '{"clientId":"%opsiserviceUser%","productType":"LocalbootProduct","productId":"$product$", "productVersion":"$pVersion$"}'
 ]
 ;.................................................
-EndFunc	
+EndFunc
 
 
 ;-------------------------------------------------------------------------
@@ -307,7 +353,7 @@ DefFunc productUpdateOnClient(val $product$:string, val $tgtConfig$:string, val 
 ; Update object of the given product for this client.
 ; If $tgtConfig$ or $instStatus$ is 'x', the corrsponding
 ; value in the object will not be changed.
-; 
+;
 ; Return value:
 ;		* empty string in case of no error
 ;		* error message (result of opsiServiceCall) in any other case
@@ -367,13 +413,13 @@ DefFunc productUpdateOnClient(val $product$:string, val $tgtConfig$:string, val 
 '$prodJSON$'
 ]
 ;.................................................
-EndFunc	
+EndFunc
 
 
 ;-------------------------------------------------------------------------
 DefFunc removeProductOnClientStatus(val $productFilter$:string) : string
 ;-------------------------------------------------------------------------
-; Set product status of products on depot server , defined by 
+; Set product status of products on depot server , defined by
 ; $productFilter$ to:
 ; * targetConfiguration = forbidden
 ; * installationStatus  = not_installed
@@ -405,7 +451,7 @@ DefFunc removeProductOnClientStatus(val $productFilter$:string) : string
 		endif		
 	endif
 	setLogLevel=$logLvl$
-	
+
 ;----------------------------------------------------------
 [sub_process_depot_info]
 ;----------------------------------------------------------
@@ -441,7 +487,7 @@ EndFunc
 ;-------------------------------------------------------------------------
 DefFunc removeProductVerOnClientStatus(val $productFilter$:string, val $pVersion$:string) : string
 ;-------------------------------------------------------------------------
-; Set product status of products on depot server , defined by 
+; Set product status of products on depot server , defined by
 ; $productFilter$ to:
 ; * targetConfiguration = forbidden
 ; * installationStatus  = not_installed
@@ -455,22 +501,22 @@ DefFunc removeProductVerOnClientStatus(val $productFilter$:string, val $pVersion
 	DefVar $p_prodId$
 	DefVar $p_actProgess$
 	DefVar $thisProductId$
-	
+
 	DefVar $logLvl$
 	set $logLvl$=getLoglevel
-	setLogLevel=7	
-	
+	setLogLevel=7
+
 	set $thisProductId$   = getValue("id", getProductMap)
-	
+
 	set $productArray$ = productVerGetOnClient($productFilter$, $pVersion$)
 	if jsonIsArray($productArray$)
 		set $count$ = jsonAsArrayCountElements($productArray$)
 		comment "Found products for [" + $productFilter$ +"]: " + $count$
-		
+
 		if ($count$ INT> "0")
 			for %prod_idx% = "0" to calculate($count$ + "-1")  do sub_process_depot_info
-		
-		endif		
+
+		endif
 	endif
 	setLogLevel=$logLvl$
 
@@ -498,7 +544,7 @@ if not ($p_prodId$ = $thisProductId$)
 			comment "* installationStatus  = " + $p_instStatus$
 			comment "* targetConfiguration = " + $p_tgtConfig$
 		endif
-	endif	
+	endif
 else
 	comment "skipping processing for actual produtId: " + $thisProductId$
 endif

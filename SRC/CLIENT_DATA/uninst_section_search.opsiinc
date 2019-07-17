@@ -1,6 +1,6 @@
 ;======================================================================
 ; unist_section_search.opsiinc
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-22 16:24:46 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:10:11 +0200
 ;======================================================================
 ; based on:
 ; https://opsi.wzb.eu/wiki/index.php/Uninstall-Registry_durchsuchen_und_Schlüssel_ermitteln
@@ -24,8 +24,12 @@ Set $ResultList$ = emptylist ($ResultList$)
 
 ;** reg query liefert alle Zeilen, in denen Searchpattern gefunden wird,
 ;** (auch z.B. DisplayName - nicht bei /k in reg query)
-Set $TempList$ =                           getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_64 '%SystemRoot%\cmd64.exe' /C")
-Set $TempList$ = addListToList($TempList$, getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_32 '%SystemRoot%\cmd64.exe' /C"))
+if ($SystemType$ = "64 Bit System") or ($SystemType$ = "x64")
+	Set $TempList$ =                           getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_64 '%SystemRoot%\cmd64.exe' /C")
+	Set $TempList$ = addListToList($TempList$, getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_32 '%SystemRoot%\cmd64.exe' /C"))
+else
+	Set $TempList$ =                           getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_64 '%System%\cmd.exe' /C")
+endif
 
 ;** wir wollen aber nur die Zeilen haben, in denen der RegPath enthalten
 ;** ist, um z.B. eine MSI-ID zu erhalten

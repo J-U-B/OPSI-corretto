@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:35:54 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:24:38 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -70,6 +70,7 @@ DefVar $MSI_Uninst_Opts$
 DefVar $NSIS_Inst_Opts$
 DefVar $NSIS_Uninst_Opts$
 DefVar $NTVersion$
+DefVar $PathToExe$
 DefVar $PathPrefix$
 DefVar $pr_DesktopLink$
 DefVar $Proc_Cnt$
@@ -96,6 +97,7 @@ DefVar $RegSearchOpts$
 DefVar $result$
 DefVar $SearchPattern$
 DefVar $SEVENZIP$
+DefVar $Stage$
 DefVar $SrcDir$
 DefVar $StrippedProductId$
 DefVar $sw_arch$

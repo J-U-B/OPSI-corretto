@@ -1,13 +1,13 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "4",
+	"O_PKG_VER"         : "5",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
 	"O_SOFTWARE"        : "corretto8",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 8",
-	"O_SOFTWARE_VER"    : "8.212.04.2",
-	"O_SOFTWARE_BUILD"  : "1",	
+	"O_SOFTWARE_VER"    : "8.222.10.3",
+	"O_SOFTWARE_BUILD"  : "",	
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html",
 	"O_SOFTWARE_CHANGES": "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/change-log.html",

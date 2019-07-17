@@ -1,3 +1,20 @@
+amazon-corretto-(8.222.10.3|11.0.4.11.1)-5:
+	* product updates
+	* pystache: use UTF-8 encoding
+	* updated helpers.opsifunc to v1.4
+	* deferring action if running instance is found (no success/error, keep action_request unchanged)
+	* added feature: local images (according to guideline)
+	* variable $PathToExe$ (according to guideline); note: contains placeholder ("%") for subdir; choosen executable "bin/java.exe"
+	* detect testing stage even if package has no matching prefix
+	* for distinction: explicit comment in logs for TESTING / RELEASE package
+	* warning on still existing install directory on uninstall is now comment
+	* fixed search registry for uninstall keys on 32 bit systems (if supported)
+	* for 32 bit compatibility: use %ProgramFiles32Dir% instead of EnvVar("ProgramFiles(x86)")
+	* fixed kill check for running applications (late check in checkinstance, not in delsub)
+	* control: adjusted description in control (en/de)
+	* updated 7z binaries
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 12:32:31 +0200
+
 amazon-corretto-(8.212.04.2|11.0.3.7.1)-4:
 	* consider optional build number for downloading and in Makefile
 	* preinst: fixing rights for ${CLIENT_DATA_DIR} if required (and possible)
@@ -17,6 +34,6 @@ amazon-corretto-(8.212.04.1|11.0.3.7.1)-2:
 
 amazon-corretto-(8|11)-1:
 	* Initial package
-	* extended helperc.opsifunc (v1.3)
+	* extended helper.opsifunc (v1.3)
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 16:59:43 +0100
 
