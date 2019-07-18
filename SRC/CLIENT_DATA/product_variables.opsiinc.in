@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:24:46 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-18 08:29:31 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -236,6 +236,7 @@ Set $Kill_Applications$ 		= GetProductPropertyList("kill_applic",emptylist($Kill
 {{/ifdef_property_kill_running}}
 
 Set $pr_PreUninst$				= GetProductProperty("uninstall_before_setup","True")
+Set $pr_silent_option$			= GetProductProperty("silent_option","silent")
 
 
 ;-----------------------------------------------------------
@@ -328,6 +329,7 @@ Switch $sw_arch$
 	EndCase
 EndSwitch
 
+
 Switch $ProductMajor$
 	Case "8"
 		Set $MinimumSpace$ 		= "320 MB"
@@ -363,6 +365,35 @@ Set $Uninst_Prg$       	= "unins000.exe"
 Set $Uninstaller$	   	= $InstallDir$ + $Uninst_Prg$
 ; ...oder UninstallString aus Registry
 
+;---------------------------------
+;*** set verbosity of (un)installer
+;---------------------------------
+if $InstallerType$ = "INNO"
+	Switch $pr_silent_option$
+		Case "silent"
+			Set $Verbosity$ = "/SILENT"
+		EndCase
+		Case "very silent"
+			Set $Verbosity$ = "/VERYSILENT"
+		EndCase
+		DefaultCase
+			Set $Verbosity$ = ""
+		EndCase
+	EndSwitch
+endif
+if $InstallerType$ = "MSI"
+	Switch $pr_silent_option$
+		Case "silent"
+			Set $Verbosity$ = "/qb-!"
+		EndCase
+		Case "very silent"
+			Set $Verbosity$ = "/qn"
+		EndCase
+		DefaultCase
+			Set $Verbosity$ = ""
+		EndCase
+	EndSwitch
+endif
 
 ;---------------------------------
 ;*** specific Installer/Uninstaller options:
@@ -373,15 +404,15 @@ Case "INNO"
 	isFatalError "FATAL ERROR: Unsupported installer type [" + $InstallerType$ + "]"
 	Set $Installer$			= "%ScriptPath%\files\" + $INSTALLER_BASE$ + ".exe"
 	Set $INNO_Setup_Inf$	= "%ScriptPath%\files\setup_corretto.inf"
-	Set $INNO_Inst_Opts$    = '/SP- /SILENT /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=english /DIR="' + $InstallDir$ +'" /GROUP="' + $ProductName$ +'" /LOADINF="+ $INNO_Setup_Inf$ +" /LOG="'+ $InstallLog$ +'"'
-	Set $INNO_Uninst_Opts$  = '/SILENT /NORESTART /LOG="'+ $UninstallLog$ +'"'
+	Set $INNO_Inst_Opts$    = '/SP- ' + $Verbosity$ + ' /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=english /DIR="' + $InstallDir$ +'" /GROUP="' + $ProductName$ +'" /LOADINF="+ $INNO_Setup_Inf$ +" /LOG="'+ $InstallLog$ +'"'
+	Set $INNO_Uninst_Opts$  = $Verbosity$ + ' /NORESTART /LOG="'+ $UninstallLog$ +'"'
 EndCase	
 Case "MSI"
 	;============= MSI ==============
 	Set $Installer$			= "%ScriptPath%\files\" + $INSTALLER_BASE$ + ".msi"
-	Set $MSI_Inst_Opts$ 	= '/qb-! /norestart /l+* "' + $InstallLog$ +'" INSTALLDIR="' + $InstallDir$ + '" REBOOT=ReallySuppress ALLUSERS=1 ' + $MSI_Features$
+	Set $MSI_Inst_Opts$ 	= $Verbosity$ + ' /norestart /l+* "' + $InstallLog$ +'" INSTALLDIR="' + $InstallDir$ + '" REBOOT=ReallySuppress ALLUSERS=1 ' + $MSI_Features$
 	Set $MSI_Inst_Cmd$		= 'msiexec /i "' + $Installer$ +'" ' + $MSI_Inst_Opts$
-	Set $MSI_Uninst_Opts$  	= '/qb-! /norestart /l+* "' + $UninstallLog$ + '" REBOOT=ReallySuppress'
+	Set $MSI_Uninst_Opts$  	= $Verbosity$ + ' /norestart /l+* "' + $UninstallLog$ + '" REBOOT=ReallySuppress'
 	Set $MSI_Uninst_Cmd$ 	= "msiexec /x $ProductKey$ " + $Uninst_Opts$
 EndCase
 Case "NSIS"

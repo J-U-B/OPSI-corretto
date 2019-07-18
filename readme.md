@@ -211,14 +211,15 @@ koennen die verfuegbaren Properties abweichen.
 
 | Property | Type | Values | Default  | Multivalue | Editable | Description | Anmerkung |
 |----------|:----:|--------|----------|:----------:|:--------:|-------------|------|
-| set_env_java_home | bool |  | True | | | Set Environment JAVA_HOME and PATH to InstallDir of jdk or jre? |  |
-| set_jar_handler | bool |  | True | | | Set Corretto to default handler for JAR files? (unset on removal) |  |
-| install_architecture | unicode | "32 bit", "64 bit", "sysnative" | "sysnative" | False | False | which architecture (32/64 bit) should be installed |  |
 | custom_post_install | unicode | "none", "custom_test.opsiinc", "post-install.opsiinc" | "none" | False | True | Define filename for include script in custom directory after installation |  |
 | custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
-| log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
-| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
+| install_architecture | unicode | "32 bit", "64 bit", "sysnative" | "sysnative" | False | False | which architecture (32/64 bit) should be installed | only available for Corretto 8 |
 | kill_applic | unicode |  |  | True | True | Instead of killing only applications of this package, kill also these running applications; requires "kill_running; use suffix '.exe' or '%' as wildcard | verfuegbar wenn in spec.json aktiviert |
+| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
+| log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
+| set_env_java_home | bool |  | True | | | Set Environment JAVA_HOME and PATH to InstallDir of jdk or jre? |  |
+| set_jar_handler | bool |  | True | | | Set Corretto to default handler for JAR files? (unset on removal) |  |
+| silent_option | unicode | "silent", "very silent"| "silent" | False | False | Show (silent) or hide (very silent) progressbar of (un)installer | |
 | uninstall_before_setup | bool |  | True |  |  | Run uninstall before (re)installation | |
 
 
@@ -351,7 +352,7 @@ vor.
 
 ### 7zip ###
 Es gilt die Lizenz von http://www.7-zip.org/license.txt.
-
+Die Lizenz liegt diesem Paket in CLIENT_DATA/bin/ ebenfalls bei.
 
 
 <div id="logo"></div>
@@ -367,7 +368,6 @@ weiterer freier Grafiken erstellt.
 
 ## Anmerkungen/ToDo ##
 
-Bekannte Fehler:
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-04-17 13:44:26 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-07-18 07:48:03 +0200

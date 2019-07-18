@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  Amazon Corretto Control                                                   }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-07-17 11:24:29 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-07-18 08:04:50 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -58,13 +58,20 @@ name: set_env_java_home
 description: Set Environment JAVA_HOME and PATH to InstallDir coretto?
 default: True
 
-
 [ProductProperty]
 type: bool
 name: set_jar_handler
 description: Set Corretto to default handler for JAR files? (unset on removal)
 default: True
 
+[ProductProperty]
+type: unicode
+name: silent_option
+multivalue: False
+editable: False
+description: Show (silent) or hide (very silent) progressbar of (un)installer
+values: ["silent", "very silent"]
+default: ["silent"]
 
 [ProductProperty]
 type: unicode

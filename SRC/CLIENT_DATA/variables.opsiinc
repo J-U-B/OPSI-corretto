@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:24:38 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-18 08:07:32 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -83,6 +83,7 @@ DefVar $ProductName$
 DefVar $pr_PreUninst$
 DefVar $pr_SetEnv_JavaHome$
 DefVar $pr_set_jar_handler$
+DefVar $pr_silent_option$
 DefVar $PSDETAIL$
 DefVar $PSDETAIL_mod$
 DefVar $PSDETAIL_MODE$
@@ -115,4 +116,5 @@ DefVar $Uninst_ID_std$
 DefVar $Uninst_Opts$
 DefVar $Uninst_Prg$
 DefVar $Uninst_RegDir$
+DefVar $Verbosity$
 DefVar $Version$
