@@ -6,7 +6,7 @@
 	
 	"O_SOFTWARE"        : "corretto",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
-	"O_SOFTWARE_VER"    : "11.0.4.11.1",	
+	"O_SOFTWARE_VER"    : "11.0.5.10.1",	
 	"O_SOFTWARE_BUILD"  : "",	
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html",

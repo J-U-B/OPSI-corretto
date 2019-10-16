@@ -52,7 +52,6 @@ Set $LogLevelDefault$ = GetProductProperty("log_level","default")
 ;-----------------------------------------------------------
 ;*** detect testing package:
 ;-----------------------------------------------------------
-;*** detect testing package:
 if (strPos($FullProductId$, "0_") = "0") and (strPos($FullProductId$, "test_") = "0") and (strPos($Stage$,"test") = "0")
 	; not a testing package
 	comment "INFO: RELEASE package detected"
