@@ -1,19 +1,20 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "6",
+	"O_PKG_VER"         : "7",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
 	"O_SOFTWARE"        : "corretto8",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 8",
-	"O_SOFTWARE_VER"    : "8.232.09.1",
+	"O_SOFTWARE_VER"    : "8.242.07.1",
 	"O_SOFTWARE_BUILD"  : "",	
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
-	"O_SOFTWARE_DL"     : "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html",
+	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",
+	"O_SOFTWARE_DL_PAGE": "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/downloads-list.html",
 	"O_SOFTWARE_CHANGES": "https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/change-log.html",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
-	"O_SOFTWARE_DL_X32"	: "https://d3pxv6yz143wms.cloudfront.net/8.232.09.1/amazon-corretto-8.232.09.1-windows-x86.msi",
-	"O_SOFTWARE_DL_X64"	: "https://d3pxv6yz143wms.cloudfront.net/8.232.09.1/amazon-corretto-8.232.09.1-windows-x64.msi",
+	"O_SOFTWARE_DL_X32"	: "",
+	"O_SOFTWARE_DL_X64"	: "",
 	
 
 	"_":"=== conditions ===",

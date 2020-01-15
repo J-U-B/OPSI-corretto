@@ -3,8 +3,8 @@
 # Download files from vendor
 # Product: AMAZON CORRETTO
 #
-# Version 1.5.2
-# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-06-18 13:19:07 +0200
+# Version 1.5.3
+# Jens Boettge <boettge@mpi-halle.mpg.de>  2020-01-15 08:37:13 +0100
 #=======================================================================
 # link examples:
 #	INNO:
@@ -69,26 +69,30 @@ fi
 
 if [ "{{O_USE_INSTALLER}}" = "MSI" ]; then
 	#========== MSI ===============
-	# BASE="{{O_SOFTWARE_DL}}/{{O_SOFTWARE}}-${VERSION}.msi"
-	# PKG_FILE="{{O_SOFTWARE}}-${VERSION}.msi"
-	### The download page contains CDN links for the msi packages
-	### Since they may change, we have to parse the file.
-	declare -A URL=()
-	for LNK in $( ${DOWNLOADER} ${DL_OUT} - {{O_SOFTWARE_DL}} | grep "amazon-corretto-.*\.msi" | sed -e 's/^.*href="\([^"]*\).*$/\1/g' ); do
-		CUR_DL=$( echo $LNK | sed -e 's/^.*corretto-\(.*\)-windows.*$/\1/')
-		if [ ! "$CUR_DL" = "${VERSION}${BUILD_ADD}" ]; then
-			echo -e "*W*  Available package is newer [$CUR_DL] than the requested version [${VERSION}${BUILD_ADD}]"
-			CUR_LNK=${LNK}
-			LNK=$(echo $LNK | sed -e "s/${CUR_DL}/${VERSION}${BUILD_ADD}/g")
-			echo -e "*I*  Trying to retrieve the requested version:\n\t\t${LNK}\n\tinsted of\n\t\t${CUR_LNK}"
-		fi
-		ARCH=$(echo $LNK| sed -e 's/^.*-\(x[0-9]*\)\.msi/\1/');
-		[ "$ARCH" = "x86" ] && ARCH="32"
-		[ "$ARCH" = "x64" ] && ARCH="64"
-		URL+=(["${ARCH}"]="$LNK")
-	done
-	### ...done. The downloak links are stored in the dictionary URL
-	
+	# exsample:
+	# 	https://corretto.aws/downloads/resources/11.0.5.10.1/amazon-corretto-11.0.5.10.1-windows-x64.msi
+	BASE="{{O_SOFTWARE_DL}}"
+	BASE=${BASE//%%VERSION%%/${VERSION}}
+	PKG_FILE="${BASE##*/}"
+	echo "[DBG] BASE     = $BASE"
+	echo "[DBG] PKG_FILE = $PKG_FILE"
+#	### The download page contains CDN links for the msi packages
+#	### Since they may change, we have to parse the file.
+#	declare -A URL=()
+#	for LNK in $( ${DOWNLOADER} ${DL_OUT} - {{O_SOFTWARE_DL}} | grep "amazon-corretto-.*\.msi" | sed -e 's/^.*href="\([^"]*\).*$/\1/g' ); do
+#		CUR_DL=$( echo $LNK | sed -e 's/^.*corretto-\(.*\)-windows.*$/\1/')
+#		if [ ! "$CUR_DL" = "${VERSION}${BUILD_ADD}" ]; then
+#			echo -e "*W*  Available package is newer [$CUR_DL] than the requested version [${VERSION}${BUILD_ADD}]"
+#			CUR_LNK=${LNK}
+#			LNK=$(echo $LNK | sed -e "s/${CUR_DL}/${VERSION}${BUILD_ADD}/g")
+#			echo -e "*I*  Trying to retrieve the requested version:\n\t\t${LNK}\n\tinsted of\n\t\t${CUR_LNK}"
+#		fi
+#		ARCH=$(echo $LNK| sed -e 's/^.*-\(x[0-9]*\)\.msi/\1/');
+#		[ "$ARCH" = "x86" ] && ARCH="32"
+#		[ "$ARCH" = "x64" ] && ARCH="64"
+#		URL+=(["${ARCH}"]="$LNK")
+#	done
+#	### ...done. The downloak links are stored in the dictionary URL
 elif [ "{{O_USE_INSTALLER}}" = "INNO" ]; then
 	#========== INNO ==============
 	#======== UNUSED HERE  ========
@@ -201,28 +205,33 @@ CNT=0
 [ ${#URL[@]} -gt 0 ] && for AX in "${!URL[@]}"; do echo "$AX bit --> ${URL[$AX]}"; done
 
 {{#ifdef_x64_only}}
-for ARCH in "64"; do
+for ARCH in "x64"; do
 {{/ifdef_x64_only}}
 {{^ifdef_x64_only}}
-for ARCH in "32" "64"; do
+for ARCH in "x86" "x64"; do
 {{/ifdef_x64_only}}
-#		[ "${ARCH}" == "64" ] && WARCH="x64_" || WARCH=""
-#		PACKAGE=${PKG_FILE//%%ARCH%%/$ARCH}
-        if [ ${#URL[@]} -gt 0 ]; then
-			PKG_URL=${URL["$ARCH"]}
-			if [ -n "${PKG_URL}" ]; then
-				download "${PKG_URL}"
-			else
-				echo -e "*E*  no download URL found for architecture x${ARCH}"
-				let "ERR+=1"
-			fi
-		fi
-#		else
-#			PKG_URL="${BASE//%%ARCH%%/$ARCH}"
-#			PKG_URL="${PKG_URL//%%WARCH%%/$WARCH}"
-#        fi
-        #download "${PKG_URL}"  "${PACKAGE}"
-#        download "${BASE}"  "${PKG_FILE}"
+		#[ "${ARCH}" == "64" ] && WARCH="x64" || WARCH="x86"
+		PKG_URL="${BASE//%%ARCH%%/$ARCH}"
+		PACKAGE=${PKG_URL##*/}
+        download "${PKG_URL}"  "${PACKAGE}"
+
+##		[ "${ARCH}" == "64" ] && WARCH="x64_" || WARCH=""
+##		PACKAGE=${PKG_FILE//%%ARCH%%/$ARCH}
+#        if [ ${#URL[@]} -gt 0 ]; then
+#			PKG_URL=${URL["$ARCH"]}
+#			if [ -n "${PKG_URL}" ]; then
+#				download "${PKG_URL}"
+#			else
+#				echo -e "*E*  no download URL found for architecture x${ARCH}"
+#				let "ERR+=1"
+#			fi
+#		fi
+##		else
+##			PKG_URL="${BASE//%%ARCH%%/$ARCH}"
+##			PKG_URL="${PKG_URL//%%WARCH%%/$WARCH}"
+##       fi
+#        #download "${PKG_URL}"  "${PACKAGE}"
+##        download "${BASE}"  "${PKG_FILE}"
 done
 
 [ "$MODE" = "depot" ] && check_md5  

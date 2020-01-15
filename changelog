@@ -1,3 +1,8 @@
+amazon-corretto-(8.242.07.1|11.0.6.10.1)-7:
+	* product updates
+	* modified product downloader (using versioned download links)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-01-15 09:20:32 +0100
+
 amazon-corretto-(8.232.09.1|11.0.5.10.1)-6:
 	* product updates
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-10-16 16:51:50 +0200
