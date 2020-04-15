@@ -1,3 +1,7 @@
+amazon-corretto-(8.252.09.1|11.0.7.10.1)-8:
+	* product updates
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-04-15 07:12:28 +0200
+
 amazon-corretto-(8.242.07.1|11.0.6.10.1)-8:
 	* product_downloader: modified detection of curl/wget
 	* fix of issue #3
