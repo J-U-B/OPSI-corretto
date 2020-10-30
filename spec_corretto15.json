@@ -4,16 +4,17 @@
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
-	"O_SOFTWARE"        : "corretto",
-	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
-	"O_SOFTWARE_VER"    : "11.0.9.11.2",
-	"O_SOFTWARE_BUILD"  : "",	
+	"O_SOFTWARE"        : "corretto15",
+	"O_SOFTWARE_NAME"   : "Amazon Corretto 15",
+	"O_SOFTWARE_VER"    : "15.0.1.9.1",
+	"O_SOFTWARE_BUILD"  : "",
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",
-	"O_SOFTWARE_DL_PAGE": "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html",
-	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-11/blob/release-11.0.9.11.2/CHANGELOG.md",
+	"O_SOFTWARE_DL_PAGE": "https://docs.aws.amazon.com/corretto/latest/corretto-15-ug/downloads-list.html",
+	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-jdk/blob/095f34d96c930981db3a45ebef2b8f84484ec00d/CHANGELOG.md#october-2020-critical-patch-update-corretto-version-150191",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
-
+	"O_SOFTWARE_DL_X64"	: "",
+	
 
 	"_":"=== conditions ===",
 	"ifdef_x64_only"				:true,

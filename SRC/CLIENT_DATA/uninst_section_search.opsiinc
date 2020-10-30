@@ -1,6 +1,6 @@
 ;======================================================================
 ; unist_section_search.opsiinc
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 11:10:11 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 18:24:35 +0100
 ;======================================================================
 ; based on:
 ; https://opsi.wzb.eu/wiki/index.php/Uninstall-Registry_durchsuchen_und_Schlüssel_ermitteln
@@ -25,10 +25,10 @@ Set $ResultList$ = emptylist ($ResultList$)
 ;** reg query liefert alle Zeilen, in denen Searchpattern gefunden wird,
 ;** (auch z.B. DisplayName - nicht bei /k in reg query)
 if ($SystemType$ = "64 Bit System") or ($SystemType$ = "x64")
-	Set $TempList$ =                           getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_64 '%SystemRoot%\cmd64.exe' /C")
-	Set $TempList$ = addListToList($TempList$, getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_32 '%SystemRoot%\cmd64.exe' /C"))
+	Set $TempList$ =                           shellCall('reg query "' + $RegPathUninstall64$ + '" ' + $RegSearchOpts$ + ' | find "HKEY_"')
+	Set $TempList$ = addListToList($TempList$, shellCall('reg query "' + $RegPathUninstall32$ + '" ' + $RegSearchOpts$ + ' | find "HKEY_"'))
 else
-	Set $TempList$ =                           getOutStreamFromSection ("ExecWith_UninstSearch_registry_query_64 '%System%\cmd.exe' /C")
+	Set $TempList$ =                           shellCall('reg query "' + $RegPathUninstall64$ + '" ' + $RegSearchOpts$ + ' | find "HKEY_"')
 endif
 
 ;** wir wollen aber nur die Zeilen haben, in denen der RegPath enthalten
@@ -92,18 +92,3 @@ endif
 if (strPos($DisplayName$, $SearchPattern$)="1") and ($ProductMajor$ = $DisplayVersionMajor$)
 	Set $ResultList$ = AddToList($ResultList$, $RegProductID$ + "|" + $Uninst_Arch$)
 endif
-
-
-;======================================================================
-[ExecWith_UninstSearch_registry_query_64]
-;======================================================================
-@echo off
-; reg query "$RegPathUninstall64$" /f "$SearchPattern$"
-reg query "$RegPathUninstall64$" $RegSearchOpts$ | find "HKEY_"
-
-;======================================================================
-[ExecWith_UninstSearch_registry_query_32]
-;======================================================================
-@echo off
-; reg query "$RegPathUninstall32$" /f "$SearchPattern$"
-reg query "$RegPathUninstall32$" $RegSearchOpts$ | find "HKEY_"

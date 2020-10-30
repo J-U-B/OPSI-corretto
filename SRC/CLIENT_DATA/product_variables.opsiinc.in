@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-18 08:29:31 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 12:22:09 +0100
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -169,6 +169,11 @@ if ($SystemType$="x32") and ($sw_arch$="64")
 endif
 
 ;-----------------------------------------------------------
+;*** property: use a local copy of the installer?
+;-----------------------------------------------------------
+Set $pr_localCopy$          = GetProductProperty("local_installer_copy","False")
+
+;-----------------------------------------------------------
 ;*** property: language - "de_DE, "en_US"
 ; application language defined via environment variable LANG
 ; (not yet implemented!)
@@ -312,7 +317,6 @@ set $ProductVersionFilter$ = $ProductMajor$ + ".*"
 ; samples for known installers
 ;-------------------------------------------
 ; amazon-corretto-${Version}-windows-x64.msi
-; amazon-corretto-${Version}-windows-x64.msi
 ; amazon-corretto-${Version}-windows-x86.msi
 ; $Version$  = O_SOFTWARE_VER
 
@@ -331,32 +335,52 @@ EndSwitch
 
 Switch $ProductMajor$
 	Case "8"
-		Set $MinimumSpace$ 		= "320 MB"
+		Set $SpaceReqInstall$   = "320"
+		Set $SpaceReqPackage$   = "120"
 		;---------------------------------
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 		= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureAddPath,FeatureSetupJavaHome"'
+			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureAddPath,FeatureSetupJavaHome"'
 		else
-			Set $MSI_Features$ 		= 'ADDLOCAL="FeatureMain,FeatureSetupEnv"'
+			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv"'
 		endif
 	EndCase
 	Case "11"
-		Set $MinimumSpace$ 		= "350 MB"
+		Set $SpaceReqInstall$   = "350"
+		Set $SpaceReqPackage$   = "170"
 		;---------------------------------
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 		= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
-			Set $MSI_Features$ 		= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
-		endif		
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
+	EndCase
+	Case "15"
+		Set $SpaceReqInstall$   = "400"
+		Set $SpaceReqPackage$   = "180"
+		;---------------------------------
+		;*** select MSI features
+		;---------------------------------
+		if $pr_SetEnv_JavaHome$ = "True"
+			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+		else
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
 	EndCase	
 	DefaultCase
 		LogError "Unsupported Java major release: " + $ProductMajor$
 		isFatalError	
 	EndCase
 EndSwitch
+
+if $pr_localCopy$ = "True"
+	Set $MinimumSpace$ 	= calculate($SpaceReqInstall$ + "+" + $SpaceReqPackage$) + " MB"
+else
+	Set $MinimumSpace$ 	= $SpaceReqInstall$ + " MB"
+endif
 
 Set $SearchPattern$ 	= "Amazon Corretto"
 Set $Uninst_ID_std$	   	= $ProductName$
@@ -401,34 +425,34 @@ Switch $InstallerType$
 Case "INNO"
 	;============= INNO ============= (not used here)
 	isFatalError "FATAL ERROR: Unsupported installer type [" + $InstallerType$ + "]"
-	Set $Installer$			= "%ScriptPath%\files\" + $INSTALLER_BASE$ + ".exe"
+	Set $InstallerFile$		= $INSTALLER_BASE$ + ".exe"
 	Set $INNO_Setup_Inf$	= "%ScriptPath%\files\setup_corretto.inf"
 	Set $INNO_Inst_Opts$    = '/SP- ' + $Verbosity$ + ' /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=english /DIR="' + $InstallDir$ +'" /GROUP="' + $ProductName$ +'" /LOADINF="+ $INNO_Setup_Inf$ +" /LOG="'+ $InstallLog$ +'"'
 	Set $INNO_Uninst_Opts$  = $Verbosity$ + ' /NORESTART /LOG="'+ $UninstallLog$ +'"'
 EndCase	
 Case "MSI"
 	;============= MSI ==============
-	Set $Installer$			= "%ScriptPath%\files\" + $INSTALLER_BASE$ + ".msi"
+	Set $InstallerFile$		= $INSTALLER_BASE$ + ".msi"
 	Set $MSI_Inst_Opts$ 	= $Verbosity$ + ' /norestart /l+* "' + $InstallLog$ +'" INSTALLDIR="' + $InstallDir$ + '" REBOOT=ReallySuppress ALLUSERS=1 ' + $MSI_Features$
-	Set $MSI_Inst_Cmd$		= 'msiexec /i "' + $Installer$ +'" ' + $MSI_Inst_Opts$
+	; $Installer is determined later!:
+	;Set $MSI_Inst_Cmd$		= 'msiexec /i "' + $Installer$ +'" ' + $MSI_Inst_Opts$
 	Set $MSI_Uninst_Opts$  	= $Verbosity$ + ' /norestart /l+* "' + $UninstallLog$ + '" REBOOT=ReallySuppress'
 	Set $MSI_Uninst_Cmd$ 	= "msiexec /x $ProductKey$ " + $Uninst_Opts$
 EndCase
 Case "NSIS"
 	;=== NSIS === (not used here)
 	isFatalError "FATAL ERROR: Unsupported installer type [" + $InstallerType$ + "]"
-	Set $Installer$			= "%ScriptPath%\files\" + $INSTALLER_BASE$ + ".exe"
+	Set $InstallerFile$		= $INSTALLER_BASE$ + ".exe"
 	Set $NSIS_Inst_Opts$  	= "/S  /D=" + $InstallDir$
-	Set $NSIS_Uninst_Opts$  	= "/S"
+	Set $NSIS_Uninst_Opts$ 	= "/S"
 EndCase
 DefaultCase
 	isFatalError "FATAL ERROR: Unknown installer type [" + $InstallerType$ + "]"
 EndCase
 EndSwitch
 
-
-if not (FileExists($Installer$))
-	LogError "FATAL ERROR: Installer not found [" + $Installer$ + "]"
+Set $InstallerSrc$		    = "%ScriptPath%\files\" + $InstallerFile$
+if not (FileExists($InstallerSrc$))
+	LogError "FATAL ERROR: Installer not found [" + $InstallerSrc$ + "]"
 	isFatalError
 endif
-

@@ -128,6 +128,11 @@ name: uninstall_before_setup
 description: Run uninstall before (re)installation; installer will remove previous setup anyway; use with caution!
 default: True
 
+[ProductProperty]
+type: bool
+name: local_installer_copy
+description: Use a temporary local copy of the installation package to avoid to avoid delays through the network.
+default: False
 
 
 [Changelog]

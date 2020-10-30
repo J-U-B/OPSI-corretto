@@ -1,4 +1,4 @@
-# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 /11") Amazon Corretto 8 /11
+# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 15") Amazon Corretto 8 / 11 / 15
 
 ## ToC ##
 
@@ -32,7 +32,8 @@
 
 ## Paketinfo ##
 
-Dieses OPSI-Paket (bzw. dessen Quellen) fuer **Amazon Corretto 8** und  **Amazon Corretto 11**
+Dieses OPSI-Paket (bzw. dessen Quellen) fuer **Amazon Corretto 8**,
+**Amazon Corretto 11** sowie **Amazon Corretto 15**
 deckt das *Java Development Kit* inklusive *Runtime* fuer die jeweiligen Releases
 ab. Eine separate JRE wird nicht mehr angeboten.  
 Waehrend Java 8 in einer 32- und 64-Bit-Version verfuegbar ist, liegt ab 
@@ -209,13 +210,14 @@ Fuer weitere Hilfsprogramme ([psDetail](#licPsDetail) und
 Je nach Art des erstellten Paketes und den Einstellungen in der <code>spec.json</code>
 koennen die verfuegbaren Properties abweichen.
 
-| Property | Type | Values | Default  | Multivalue | Editable | Description | Anmerkung |
+| Property | Type | Values | Default  | Multivalue | Editable | Description | Note |
 |----------|:----:|--------|----------|:----------:|:--------:|-------------|------|
 | custom_post_install | unicode | "none", "custom_test.opsiinc", "post-install.opsiinc" | "none" | False | True | Define filename for include script in custom directory after installation |  |
 | custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
 | install_architecture | unicode | "32 bit", "64 bit", "sysnative" | "sysnative" | False | False | which architecture (32/64 bit) should be installed | only available for Corretto 8 |
-| kill_applic | unicode |  |  | True | True | Instead of killing only applications of this package, kill also these running applications; requires "kill_running; use suffix '.exe' or '%' as wildcard | verfuegbar wenn in spec.json aktiviert |
+| kill_applic | unicode |  |  | True | True | Instead of killing only applications of this package, kill also these running applications; requires "kill_running; use suffix '.exe' or '%' as wildcard | available if activated in spec.json |
 | kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
+| local_installer_copy | bool | | False | | | Use a temporary local copy of the installation package to avoid to avoid delays through the network. | increases the required disk space |
 | log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
 | set_env_java_home | bool |  | True | | | Set Environment JAVA_HOME and PATH to InstallDir of jdk or jre? |  |
 | set_jar_handler | bool |  | True | | | Set Corretto to default handler for JAR files? (unset on removal) |  |
@@ -370,4 +372,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-07-18 07:48:03 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2020-10-30 11:13:07 +0100

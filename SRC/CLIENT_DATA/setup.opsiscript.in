@@ -2,7 +2,7 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-27 14:44:25 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 13:50:09 +0100
 ;======================================================================
 
 ;======================================================================
@@ -40,12 +40,21 @@ else
 		logError "Can't find uninstaller script"
 		isFatalError "delsub.opsiinc not found"
 	endif	
-	
+
 	; Start the installation
+	marktime
+
+	if $pr_localCopy$ = "True"
+		ShowBitmap $Img_Prepare$ $ProductName$
+		Message "Copying the installer to local disk"
+		Files_CopyLocalInstaller
+		set $Installer$ = $TempDir$ + "\" + $InstallerFile$
+	else
+		set $Installer$ = $InstallerSrc$
+	endif
+
 	ShowBitmap $Img_Install$ $ProductName$
 	Message "Installing " + $ProductName$ + " " + $Version$+ " (" + $sw_arch$ + " bit)"
-	
-	marktime	
 	
 	if not (FileExists($Installer$))
 		logError "Installer not found: [" + $Installer$ + "]"
@@ -69,7 +78,16 @@ else
 		DefaultCase
 			isFatalError "FATAL ERROR: Unknown installer type [" + $InstallerType$ + "]"
 		EndCase
-	EndSwitch			
+	EndSwitch
+
+	if $pr_localCopy$ = "True"
+		comment "delete local installer copy: [" + $TempDir$ + "\" + $InstallerFile$ = "]"
+		Files_DeleteLocalInstaller
+	endif
+
+	if not($FatalError$ = "")
+		isFatalError $FatalError$
+	endif
 
 	
 	; ----------------------------------------------------
@@ -148,7 +166,19 @@ else
 	
 endif
 
- 
+
+;======================================================================
+[Files_CopyLocalInstaller]
+;======================================================================
+copy "$InstallerSrc$" "$TempDir$"
+
+
+;======================================================================
+[Files_DeleteLocalInstaller]
+;======================================================================
+delete -f "$TempDir$\$InstallerFile$"
+
+
 ;======================================================================
 [Winbatch_INNO_install]
 ;======================================================================
@@ -158,7 +188,8 @@ $Installer$ $INNO_Inst_Opts$
 ;======================================================================
 [Winbatch_MSI_install]
 ;======================================================================
-$MSI_Inst_Cmd$
+; $MSI_Inst_Cmd$
+msiexec /i "$Installer$" $MSI_Inst_Opts$
 
 
 ;======================================================================

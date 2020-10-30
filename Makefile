@@ -1,12 +1,22 @@
 ############################################################
-# OPSI package Makefile (JAVA)
-# Version: 2.1.5
+# OPSI package Makefile (Amazon Corretto / Java)
+# Version: 2.2.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2019-06-18 09:08:51 +0200
+# 2020-10-30 11:45:22 +0100
 ############################################################
 
-.PHONY: header clean mpimsp dfn mpimsp_test dfn_test all_test all_prod all help download
+.PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
 .DEFAULT_GOAL := help
+
+### defaults:
+DEFAULT_SPEC = spec.json
+DEFAULT_ALLINC = true
+DEFAULT_KEEPFILES = false
+DEFAULT_ARCHIVEFORMAT = cpio
+### to keep the changelog inside the control set CHANGELOG_TGT to an empty string
+### otherwise the given filename will be used:
+CHANGELOG_TGT = changelog.txt
+# CHANGELOG_TGT =
 
 PWD = ${CURDIR}
 BUILD_DIR = BUILD
@@ -36,7 +46,7 @@ TODAY := $(shell date +"%Y-%m-%d")
 MD5SUM_FILE := corretto.md5sums
 
 ### spec file:
-SPEC ?= spec.json
+SPEC ?= $(DEFAULT_SPEC)
 ifeq ($(shell test -f $(SPEC) && echo OK),OK)
     $(info * spec file found: $(SPEC))
 else
@@ -51,7 +61,7 @@ else
 endif
 
 ### build "batteries included' package?
-ALLINC ?= false
+ALLINC ?= $(DEFAULT_ALLINC)
 ALLINC_SEL := "[true] [false]"
 AFX := $(firstword $(ALLINC))
 AFY := $(shell echo $(AFX) | tr A-Z a-z)
@@ -69,7 +79,7 @@ else
 endif
 
 ### Keep all files in files/ directory?
-KEEPFILES ?= false
+KEEPFILES ?= $(DEFAULT_KEEPFILES)
 KEEPFILES_SEL := "[true] [false]"
 KFX := $(firstword $(KEEPFILES))
 override KFX := $(shell echo $(KFX) | tr A-Z a-z)
@@ -80,7 +90,8 @@ else
 	override KEEPFILES := $(shell echo $(KFX) | tr -d '[]')
 endif
 
-ARCHIVE_FORMAT ?= cpio
+### Used archive format for OPSI package
+ARCHIVE_FORMAT ?= $(DEFAULT_ARCHIVEFORMAT)
 ARCHIVE_TYPES :="[cpio] [tar]"
 AFX := $(firstword $(ARCHIVE_FORMAT))
 AFY := $(shell echo $(AFX) | tr A-Z a-z)
@@ -120,6 +131,7 @@ var_test:
 	@echo "* Templates CLIENT_DATA : [$(FILES_IN)]"
 	@echo "* Files Mask            : [$(FILES_MASK)]"
 	@echo "* Keep files            : [$(KEEPFILES)]"
+	@echo "* Changelog target      : [$(CHANGELOG_TGT)]"
 	@echo "=================================================================="
 	@echo "* Installer files in $(DL_DIR):"
 	@for F in `ls -1 $(DL_DIR)/$(FILES_MASK) | sed -re 's/.*\/(.*)$$/\1/' `; do echo "    $$F"; done 
@@ -188,40 +200,27 @@ o4i_test_noprefix: header
 			STAGE="testing"  \
 	build
 
+pdf:
+	@echo "---------- creating readme.pdf -----------------------------------"
+	@if [ -f "readme.md" ]; then \
+		pandoc "readme.md" \
+    		--latex-engine=xelatex \
+    		-f markdown \
+    		-V linkcolor:blue \
+    		-V geometry:a4paper \
+    		-V geometry:margin=30mm \
+    		-V mainfont="DejaVu Serif" \
+    		-V monofont="DejaVu Sans Mono" \
+    		-o "readme.pdf" ; \
+    		if [ -f "readme.pdf" -a "readme.md" -ot "readme.pdf" ]; then \
+    			echo "* OK"; \
+    		else \
+    			echo "* Error: readme.pdf is missing or older than readme.md"; \
+    		fi; \
+    else \
+    	echo "* Error: readme.md is missing!";\
+	fi
 
-dfn: header
-	@echo "---------- building DFN package ----------------------------------"
-	@make 	TESTPREFIX=""    \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
-			STAGE="release"  \
-	build	
-	
-dfn_test: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX="test_"  \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
-			STAGE="testing"  \
-	build
-
-dfn_test_0: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX="0_"  \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
-			STAGE="testing"  \
-	build
-
-dfn_test_noprefix: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX=""    \
-			ORGNAME="DFN"    \
-			ORGPREFIX="dfn_" \
-			STAGE="testing"  \
-	build
-	
-		
 
 clean_packages:
 	@echo "---------- cleaning packages, checksums and zsync ----------------"
@@ -243,15 +242,13 @@ help: header
 	@echo "	o4i_test"
 	@echo "	o4i_test_0"
 	@echo "	o4i_test_noprefix"	
-	@echo "	dfn"
-	@echo "	dfn_test"
-	@echo "	dfn_test_0"
-	@echo "	dfn_test_noprefix"
 	@echo "	all_prod"
 	@echo "	all_test"
 	@echo "	fix_rights"
 	@echo "	clean"
 	@echo "	clean_packages"
+	@echo "	download              - download installation archive(s) from vendor"
+	@echo "	pdf                   - create PDF from readme.md (req. pandoc)"
 	@echo ""
 	@echo "Options:"
 	@echo "	SPEC=<filename>                 (default: spec.json)"
@@ -347,11 +344,25 @@ build: download clean copy_from_src
 		echo "* Creating OPSI/$$F"; \
 		rm -f $(BUILD_DIR)/OPSI/$$F; \
 		${PYSTACHE} $(SRC_DIR)/OPSI/$$F.in $(BUILD_JSON) > $(BUILD_DIR)/OPSI/$$F; \
-	done	
+	done
+
+	for E in txt md pdf; do \
+		if [ -e readme.$$E ]; then \
+			echo "Copying additional file: readme.$$E"; \
+			cp -f readme.$$E $(BUILD_DIR)/OPSI/; \
+		fi; \
+	done
 	
 	if [ -e $(BUILD_DIR)/OPSI/control -a -e changelog ]; then \
-		cat changelog >> $(BUILD_DIR)/OPSI/control; \
-	fi	
+		if [ -n "$(CHANGELOG_TGT)" ]; then \
+			echo "* Using separate CHANGELOG file."; \
+			echo "The logs were moved to $(CHANGELOG_TGT)" >> $(BUILD_DIR)/OPSI/control; \
+			cp -f changelog $(BUILD_DIR)/OPSI/$(CHANGELOG_TGT); \
+		else \
+			echo "* Including changelogs in CONTROL file."; \
+			cat changelog >> $(BUILD_DIR)/OPSI/control; \
+		fi; \
+	fi
 	
 	for F in $(FILES_IN); do \
 		echo "* Creating CLIENT_DATA/$$F"; \

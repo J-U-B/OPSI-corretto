@@ -2,7 +2,7 @@
 ; exitcode_msi.ins
 ; Source: https://forum.opsi.org/wiki/userspace:check_msi-exitcode
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>		2019-03-22 12:11:44 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>		2020-10-30 13:47:16 +0100
 ;=====================================================================
 
 ;=====================================================================
@@ -12,8 +12,9 @@
 set $currentLogLevel$ = getLogLevel 
 
 ;ExitCode des Installers abfragen
-set $ExitCode$ = getLastExitCode
-set $ErrorMsg$ = ""
+set $ExitCode$   = getLastExitCode
+set $ErrorMsg$   = ""
+set $FatalError$ = ""
  
 ;Loglevel anpassen
 setLogLevel = 4
@@ -188,7 +189,8 @@ else
 	else
 		logError $ErrorMsg$
 	endif
-	isFatalError "MSI error " + $ExitCode$
+	; isFatalError "MSI error " + $ExitCode$
+	set $FatalError$ =  "MSI error " + $ExitCode$
 endif
 
 ;Loglevel anpassen

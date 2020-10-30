@@ -11,7 +11,7 @@
 #   PRODUCT_ID: id of the current product
 #   CLIENT_DATA_DIR: directory which contains the installed client data
 #=====================================================================
-# J. Boettge <boettge@mpi-halle.mpg.de>  2018-10-26 07:45:20 +0200
+# J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 13:04:16 +0100
 #=====================================================================
 
 TS=$(date +"%s")
@@ -53,7 +53,7 @@ else
 		rm ${DST}
 	fi
 	
-	if [ ! -d "${SRC}" ]; then	
+	if [ ! -d "${SRC}" -a ! -d "${DST}" ]; then
 		echo "Directory [${SRC}] does not exist. Try to create it."
 		mkdir -m 750 ${SRC} && chgrp pcpatch ${SRC}
 	fi

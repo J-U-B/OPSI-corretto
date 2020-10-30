@@ -1,3 +1,20 @@
+amazon-corretto-(8.272.10.3|11.0.9.11.2|15.0.1.9.1)-9:
+	* product updates; new: Corretto 15
+	* new property: local_installer_copy
+	* update helpers.opsifunc 1.4 -> 1.6
+	* compatibility with opsi-winst 4.12.3.16 and above ensured: cmd64 replaced
+	* Makefile adjusted: 
+		* removed obsolete *dfn* targets
+		* create readme.pdf (req. pandoc; manual target)
+		* optional readme.[txt|md|pdf] in package
+		* default variables
+	* bail out on fatal error after cleanup
+	* adjusted postinst (handling of symlinked files/)
+	* NOTE: Issue with Corretto 11/15 MSI:
+		* Corretto 15 uninstalls Corretto 11 and vice versa
+		* see also: https://github.com/corretto/corretto-jdk/issues/9
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 18:26:48 +0100
+
 amazon-corretto-(8.265.01.1|11.0.8.10.1)-8:
 	* product updates corretto 8
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-07-15 07:00:34 +0200

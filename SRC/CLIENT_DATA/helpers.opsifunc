@@ -3,15 +3,21 @@
 ; 
 ; Some general helper functions...
 ;
-; Version: 	v1.4
+; Version: 	v1.6
 ; Author : 	J. Boettge <boettge@mpi-halle.mpg.de>
-; Date   :	2019-07-08 16:32:04 +0200
+; Date   :	2020-07-20 13:16:14 +0200
 ;==========================================================================
 ; Changelog
 ; ---------
+; v1.6
+; * added function productExtUpdateOnClient
+;
+; v1.5
+; * fixed valid actions for productSetActionRequest
+;
 ; v1.4
 ; * added function currentProductSetReport
-
+;
 ; v1.3
 ; * added function productVerGetOnClient
 ; * added function removeProductVerOnClientStatus
@@ -223,7 +229,7 @@ DefFunc productSetActionRequest(val $prodId$:string, val $actRequest$: string) :
 	DefStringList $outStream$
 	DefVar $ValidActions$
 	set $actRequest$ = lower($actRequest$)
-	set $ValidActions$ = "||setup|update|uninstall|always|once|always|custom|"
+	set $ValidActions$ = "|setup|update|uninstall|always|once|always|custom|none|"
 	if contains($ValidActions$, "|"+$actRequest$+"|")
 		set $outStream$ = getReturnListFromSection("opsiServiceCall_setActionRequest")
 		set $result$ = takeString("0", $outStream$)
@@ -414,6 +420,77 @@ DefFunc productUpdateOnClient(val $product$:string, val $tgtConfig$:string, val 
 ]
 ;.................................................
 EndFunc
+;--- ...productUpdateOnClient --------------------------------------------
+
+
+;-------------------------------------------------------------------------
+DefFunc productExtUpdateOnClient(val $product$:string, val $tgtConfig$:string, val $instStatus$:string, val $actionResult$: string, val $actionProgress$: string) : string
+;-------------------------------------------------------------------------
+; Update object of the given product for this client (extended).
+; If $tgtConfig$ or $instStatus$ is 'x', the corrsponding
+; value in the object will not be changed.
+;
+; Return value:
+;		* empty string in case of no error
+;		* error message (result of opsiServiceCall) in any other case
+;-------------------------------------------------------------------------
+	DefVar $logLvl$
+	set $logLvl$=getLoglevel
+	setLogLevel=7
+
+	DefStringList $outStream$
+	DefVar $prodJSON$
+	set $prodJSON$ = '{"ident" : "' + $product$ + ';LocalbootProduct;%opsiserviceUser%", "type":"ProductOnClient", "lastAction":"", "actionResult":"' + $actionResult$ + '", "actionProgress":"'+ $actionProgress$ + '"}}'
+
+	if ($tgtConfig$ = '') AND ($instStatus$ = '')
+		; *** nothing to do
+		set $result$ = ""
+	else
+		if not ($tgtConfig$ = '')
+			if ($tgtConfig$ = 'not_installed')
+				set $prodJSON$ = jsonAsObjectSetStringtypeValueByKey($prodJSON$,"targetConfiguration", "")
+			else
+				set $prodJSON$ = jsonAsObjectSetStringtypeValueByKey($prodJSON$,"targetConfiguration", $tgtConfig$)
+			endif
+		endif
+		if not ($instStatus$ = '')
+			if ($instStatus$ = 'undefined')
+				set $prodJSON$ = jsonAsObjectSetStringtypeValueByKey($prodJSON$,"installationStatus", "")
+			else
+				set $prodJSON$ = jsonAsObjectSetStringtypeValueByKey($prodJSON$,"installationStatus", $instStatus$)
+			endif
+		endif
+
+		if ($prodJSON$ = '')
+			set $result$ = "productUpdateOnClient: Failed to build JSON object"
+			logError $result$
+		else
+			set $outStream$ = getReturnListFromSection("opsiServiceCall_update_productOnClient")
+			set $result$ = takeString("0", $outStream$)
+			if ($result$='[]')
+				set $result$ = ''
+			endif
+			if strPos($result$,'-> ') INT> "0"
+				set $result$ = strPart($result$, "4", strLength($result$))
+			endif
+			if jsonIsObject($result$)
+				set $result$ = jsonAsObjectGetValueByKey($result$, "message")
+			endif
+
+		endif
+	endif
+	setLogLevel=$logLvl$
+
+;.................................................
+[opsiServiceCall_update_productOnClient]
+;.................................................
+"method": "productOnClient_updateObjects"
+"params": [
+'$prodJSON$'
+]
+;.................................................
+EndFunc
+;--- ...productExtUpdateOnClient -----------------------------------------
 
 
 ;-------------------------------------------------------------------------
