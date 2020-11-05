@@ -216,7 +216,7 @@ koennen die verfuegbaren Properties abweichen.
 | custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
 | install_architecture | unicode | "32 bit", "64 bit", "sysnative" | "sysnative" | False | False | which architecture (32/64 bit) should be installed | only available for Corretto 8 |
 | kill_applic | unicode |  |  | True | True | Instead of killing only applications of this package, kill also these running applications; requires "kill_running; use suffix '.exe' or '%' as wildcard | available if activated in spec.json |
-| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
+| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | available if activated in spec.json |
 | local_installer_copy | bool | | False | | | Use a temporary local copy of the installation package to avoid to avoid delays through the network. | increases the required disk space |
 | log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
 | set_env_java_home | bool |  | True | | | Set Environment JAVA_HOME and PATH to InstallDir of jdk or jre? |  |

@@ -6,12 +6,12 @@
 	
 	"O_SOFTWARE"        : "corretto11",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
-	"O_SOFTWARE_VER"    : "11.0.9.11.2",
+	"O_SOFTWARE_VER"    : "11.0.9.12.1",
 	"O_SOFTWARE_BUILD"  : "",
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",
 	"O_SOFTWARE_DL_PAGE": "https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html",
-	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-11/blob/release-11.0.9.11.2/CHANGELOG.md",
+	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-11/blob/release-11.0.9.12.1/CHANGELOG.md#corretto-version-1109121",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
 	"O_SOFTWARE_DL_X64"	: "",
 	
