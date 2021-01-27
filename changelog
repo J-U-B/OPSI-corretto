@@ -1,3 +1,10 @@
+amazon-corretto-(8.282.08.1|11.0.10.9.1|15.0.2.7.1)-9:
+	* product updates
+		* corretto 8 -> 8.282.08.1
+		* corretto 11 -> 11.0.10.9.1
+		* corretto 15 -> 15.0.2.7.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-01-27 06:29:12 +0100
+
 amazon-corretto-11.0.9.12.1-9:
 	* product update corretto11 -> 11.0.9.12.1
 	* fix Readme.(md|pdf)
