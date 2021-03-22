@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 12:22:09 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-03-22 17:33:01 +0100
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -297,13 +297,25 @@ Set $PathToExe$			= $InstallDir$ + "%\bin\java.exe"
 ;		if $ProductMajor$ = "11"
 ;			Set $ProductFilter$	= "*corretto11$|*corretto$"
 ;		endif
+;		if $ProductMajor$ = "15"
+;			Set $ProductFilter$	= "*corretto15$|*corretto$"
+;		endif
+;		if $ProductMajor$ = "16"
+;			Set $ProductFilter$	= "*corretto16$|*corretto$"
+;		endif
 ;	EndCase
 ;	Case "corretto8"
 ;		Set $ProductFilter$	= "*corretto8$"
 ;	EndCase	
 ;	Case "corretto11"
 ;		Set $ProductFilter$	= "*corretto11$"
-;	EndCase	
+;	EndCase
+;	Case "corretto15"
+;		Set $ProductFilter$	= "*corretto15$"
+;	EndCase
+;	Case "corretto16"
+;		Set $ProductFilter$	= "*corretto16$"
+;	EndCase
 ;	DefaultCase
 ;		Set $ProductFilter$	= ""
 ;	EndCase	
@@ -370,6 +382,18 @@ Switch $ProductMajor$
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
 	EndCase	
+	Case "16"
+		Set $SpaceReqInstall$   = "420"
+		Set $SpaceReqPackage$   = "185"
+		;---------------------------------
+		;*** select MSI features
+		;---------------------------------
+		if $pr_SetEnv_JavaHome$ = "True"
+			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+		else
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
+	EndCase		
 	DefaultCase
 		LogError "Unsupported Java major release: " + $ProductMajor$
 		isFatalError	

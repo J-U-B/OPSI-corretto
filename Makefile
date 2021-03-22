@@ -204,7 +204,7 @@ pdf:
 	@echo "---------- creating readme.pdf -----------------------------------"
 	@if [ -f "readme.md" ]; then \
 		pandoc "readme.md" \
-    		--latex-engine=xelatex \
+    		--pdf-engine=xelatex \
     		-f markdown \
     		-V linkcolor:blue \
     		-V geometry:a4paper \

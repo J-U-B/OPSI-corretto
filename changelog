@@ -1,3 +1,11 @@
+amazon-corretto-(8.282.08.1|11.0.10.9.1|15.0.2.7.1|16.0.0.36.1)-10:
+	* added general support for Corretto 16
+	* added spec for Corretto 16 -> 16.0.0.36.1
+	* adjusted Makefile (pandoc arguments)
+	* updated helpers.opsifumc -> v1.7
+	* updated readme.md
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-03-22 17:33:47 +0100
+	
 amazon-corretto-(8.282.08.1|11.0.10.9.1|15.0.2.7.1)-9:
 	* product updates
 		* corretto 8 -> 8.282.08.1
