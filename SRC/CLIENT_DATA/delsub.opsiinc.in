@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-17 12:29:34 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 14:39:46 +0200
 ;=====================================================================
 
 
@@ -102,6 +102,20 @@ Switch $Uninst_Arch$
 	EndCase
 EndSwitch
 
+if ($Inst_Loc$ = "")
+	set $TempList$ = splitString($Inst_Ver$, ".")
+	if (takestring(0,$TempList$)="1") and (takestring(1,$TempList$)="8")
+		; set $Temp$ = takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$) + "_" + takestring(3,$TempList$)
+		set $Temp$ = "1.8.0_" + takestring(3,$TempList$)
+		set $Inst_Loc$ = GetRegistryStringValueSysnative("[HKLM\SOFTWARE\Javasoft\Java Runtime Environment\" + $Temp$ + "\MSI] Path")
+	else
+		set $Temp$ = takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$)
+		set $Inst_Loc$ = GetRegistryStringValueSysnative("[HKLM\SOFTWARE\Javasoft\JDK\" + $Temp$ + "] JavaHome")
+	endif
+	if ($Inst_Loc$ = "")
+		logWarning "Can't get install location for Corretto " + $Inst_Ver$ + " from registry."
+	endif
+endif
 
 if ($UninstallString$ = "") 
 	LogError "Missing UninstallString for [%id%] -- skipping"
@@ -177,16 +191,16 @@ if ($isINNO$="1")
 else
 	sub_check_exitcode_msi
 endif	
-if ($ExitCode$ = "0") and not ($Uninst_RegDir$ = "")
-		;=== wait for cleanup
-		sleepSeconds 2
-		;=== does the installation directory still exist?
-		if (FileExists($Inst_Loc$))
-			; logWarning "Install directory still exists: [" + $Inst_Loc$ + "]"
-			comment "INFO: Install directory still exists: [" + $Inst_Loc$ + "]. Trying to delete."
-			;=== try final cleanup
-			Files_del_InstallDir
-		endif
+if ($ExitCode$ = "0") and not ($Inst_Loc$ = "")
+	;=== wait for cleanup
+	sleepSeconds 2
+	;=== does the installation directory still exist?
+	if (FileExists($Inst_Loc$))
+		; logWarning "Install directory still exists: [" + $Inst_Loc$ + "]"
+		comment "INFO: Install directory still exists: [" + $Inst_Loc$ + "]. Trying to delete."
+		;=== try final cleanup
+		Files_del_InstallDir
+	endif
 endif
 
 if ($pr_set_jar_handler$ = "true")

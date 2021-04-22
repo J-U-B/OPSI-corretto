@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-03-22 17:33:01 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 09:15:50 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -271,6 +271,8 @@ Set $InstallerType$   		= "{{O_USE_INSTALLER}}"
 Set $JAVA_VER_FULL$		= "{{O_SOFTWARE_VER}}"
 Set $TempList$			= splitString ($JAVA_VER_FULL$,".")
 Set $JAVA_VER$			= takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$)
+; works only for Java > 8:
+Set $JAVA_SUB_DIR$		= "jdk" + $JAVA_VER$ + "_" + takestring(3,$TempList$)
 Set $ProductMajor$		= takeString(0, splitString ($JAVA_VER_FULL$,"."))
 
 Set $SrcDir$			= "%ScriptPath%\files\" 

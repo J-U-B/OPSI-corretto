@@ -7,7 +7,7 @@
 * [Paket erstellen](#paket_erstellen)
   * [Voraussetzungen](#voraussetzungen)
   * [Makefile und spec.json](#makefile_und_spec)
-  * [pystache](#pystache)
+  * [Mustache](#mustache)
   * [Verzeichnisstruktur](#verzeichnisstruktur)
   * [Makefile-Parameter](#makefile_parameter)
   * [spec.json](#spec_json)
@@ -72,7 +72,6 @@ jeweiligen Distributionen zu beziehen sind.
 Das sind (angegebenen Namen entsprechen Paketen in Debian/Ubuntu):
 
 * <code>make</code>
-* python-pystache
 * <code>curl</code> bzw. <code>wget</code>
 
 
@@ -95,16 +94,17 @@ die Major-Release Bestandteil der ProductId ist. Dies ermoeglicht die parallele
 Installation mehrerer Releases.
 
 
-<div id="pystache"></div>
+<div id="mustache"></div>
 
-### pystache ###
+### Mustache ###
 
-Als Template-Engine kommt **<code>pystache</code>** zum Einsatz.
-Das entsprechende Paket ist auf dem Build-System aus dem Repository der verwendeten
-Distribution zu installieren.
+Als Template-Engine kommt **Mustache** zum Einsatz.  
+Im Detail wird hier eine Go-Implementierung verwendet. Die Software ist auf 
+[Github](https://github.com/cbroglie/mustache) zu finden. Binaries 
+für Linux und Windows liegen diesem Paket bei.
 
-Unter Debian/Ubuntu erledigt das:
-> <code>sudo apt-get install python-pystache</code>
+Das in vorherigen Versionen dieses Paketes (<11) verwendete `pystache` kommt
+nicht mehr zum Einsatz und wurde aus den Quellen entfernt.
 
 
 
@@ -361,7 +361,8 @@ Die Lizenz liegt diesem Paket in CLIENT_DATA/bin/ ebenfalls bei.
 <div id="logo"></div>
 
 ### Logo ###
-Anregung fuer das erstellte Logo war https://pixabay.com/de/java-pokal-kaffee-programmierung-151343.  
+Anregung fuer das erstellte Logo war:  
+https://pixabay.com/de/java-pokal-kaffee-programmierung-151343.  
 Die Variationen des Icon-Satzes fuer das OPSI-Paket wurden von mir unter Verwendung
 weiterer freier Grafiken erstellt.
 
@@ -373,4 +374,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-03-22 16:40:02 +0100
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-04-22 15:56:15 +0200

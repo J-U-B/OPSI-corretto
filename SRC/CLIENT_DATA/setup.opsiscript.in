@@ -2,7 +2,7 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 13:50:09 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 14:36:51 +0200
 ;======================================================================
 
 ;======================================================================
@@ -104,7 +104,12 @@ else
 	
 	set $ResultList$ = shellCall('dir /b "' + $InstallDir$ +'"')
 	if count($ResultList$) INT>= "1"
-		set $JAVA_HOME$ = $InstallDir$ + takeString("0",$ResultList$)
+		if (($ProductMajor$ INT> "8") and (count($ResultList$) INT= "1")) or (($ProductMajor$ INT= "8") and (count($ResultList$) INT= "2"))
+			set $JAVA_HOME$ = $InstallDir$ + takeString("0",$ResultList$)
+		else
+			logWarning "It looks like there are still remains of an old installation."
+			set $JAVA_HOME$ = $InstallDir$ + $JAVA_SUB_DIR$
+		endif
 	else
 		set $JAVA_HOME$ = ""
 		logError "Error detecting JavaHome directory"

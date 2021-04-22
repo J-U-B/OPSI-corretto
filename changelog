@@ -1,3 +1,15 @@
+amazon-corretto-(8.292.10.1|11.0.11.9.1|15.0.2.7.1|16.0.0.36.1)-11:
+	* product updates
+		* corretto 8 -> 8.292.10.1
+		* corretto 11 -> 11.0.11.9.1
+	* workaround for detection of install subdirectory for uninstall
+	* Makefile: pystache replaced by mustache (Go implementation)
+	* added mustache 32/64
+	* removed pystache_opsi.py
+	* added style for pandoc
+	* moved corretto.svg and corretto.xcf to SRC/IMAGES (out of final OPSI package)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 15:43:45 +0200
+
 amazon-corretto-(8.282.08.1|11.0.10.9.1|15.0.2.7.1|16.0.0.36.1)-10:
 	* added general support for Corretto 16
 	* added spec for Corretto 16 -> 16.0.0.36.1

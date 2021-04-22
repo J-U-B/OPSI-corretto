@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 13:48:47 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 13:28:59 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -58,6 +58,7 @@ DefVar $isMSI$
 ; DefVar $isNSIS$
 DefVar $isO4I$
 DefVar $JAVA_HOME$
+DefVar $JAVA_SUB_DIR$
 DefVar $JAVA_VER$
 DefVar $JAVA_VER_FULL$
 DefVar $Kill_Running$
@@ -110,6 +111,7 @@ DefVar $StrippedProductId$
 DefVar $sw_arch$
 DefVar $sw_lang$
 DefVar $SystemType$
+DefVar $Temp$
 DefVar $TempDir$
 DefVar $Testing$
 DefVar $TimeDiff$

@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 2.2.0
+# Version: 2.3.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2020-10-30 11:45:22 +0100
+# 2021-04-22 16:03:30 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
@@ -13,7 +13,7 @@ DEFAULT_SPEC = spec.json
 DEFAULT_ALLINC = true
 DEFAULT_KEEPFILES = false
 DEFAULT_ARCHIVEFORMAT = cpio
-### to keep the changelog inside the control set CHANGELOG_TGT to an empty string
+### to keep the changelog inside the control set CHANGELOG_TGT to an empty strin
 ### otherwise the given filename will be used:
 CHANGELOG_TGT = changelog.txt
 # CHANGELOG_TGT =
@@ -33,7 +33,7 @@ ifeq ($(OPSI_BUILDER),)
 endif
 $(info * OPSI_BUILDER = $(OPSI_BUILDER))
 
-PYSTACHE = ./SRC/SCRIPTS/pystache_opsi.py
+MUSTACHE = ./SRC/TOOLS/mustache.32
 BUILD_JSON = $(BUILD_DIR)/build.json
 CONTROL_IN = $(SRC_DIR)/OPSI/control.in
 CONTROL = $(BUILD_DIR)/OPSI/control
@@ -44,6 +44,7 @@ FILES_IN := $(basename $(shell (cd $(SRC_DIR)/CLIENT_DATA; ls *.in 2>/dev/null))
 FILES_OPSI_IN := $(basename $(shell (cd $(SRC_DIR)/OPSI; ls *.in 2>/dev/null)))
 TODAY := $(shell date +"%Y-%m-%d")
 MD5SUM_FILE := corretto.md5sums
+TMP_FILE := $(shell mktemp -u)
 
 ### spec file:
 SPEC ?= $(DEFAULT_SPEC)
@@ -200,28 +201,6 @@ o4i_test_noprefix: header
 			STAGE="testing"  \
 	build
 
-pdf:
-	@echo "---------- creating readme.pdf -----------------------------------"
-	@if [ -f "readme.md" ]; then \
-		pandoc "readme.md" \
-    		--pdf-engine=xelatex \
-    		-f markdown \
-    		-V linkcolor:blue \
-    		-V geometry:a4paper \
-    		-V geometry:margin=30mm \
-    		-V mainfont="DejaVu Serif" \
-    		-V monofont="DejaVu Sans Mono" \
-    		-o "readme.pdf" ; \
-    		if [ -f "readme.pdf" -a "readme.md" -ot "readme.pdf" ]; then \
-    			echo "* OK"; \
-    		else \
-    			echo "* Error: readme.pdf is missing or older than readme.md"; \
-    		fi; \
-    else \
-    	echo "* Error: readme.md is missing!";\
-	fi
-
-
 clean_packages:
 	@echo "---------- cleaning packages, checksums and zsync ----------------"
 	@rm -f $(PACKAGE_DIR)/*.md5 $(PACKAGE_DIR)/*.opsi $(PACKAGE_DIR)/*.zsync
@@ -260,6 +239,38 @@ help: header
 	@echo "			If false only files matching this package version are kept."
 	@echo "	ARCHIVE_FORMAT=[cpio|tar]       (default: cpio)"
 	@echo ""
+
+pdf:
+	@# requirements for ths script (under Debian/Ubuntu):
+	@#    pandoc
+	@#    texlive-xetex
+	@#    texlive-latex-base
+	@#    texlive-fonts-recommended
+	@#    texlive-latex-recommended
+	@if [ -f "readme.md" ]; then \
+		if [ ! -e readme.pdf -o readme.pdf -ot readme.md ]; then \
+			echo "* Converting readme.md to readme.pdf"; \
+			cat readme.md | sed -re 's/^.*<!-- \b(START|END)\b PANDOC_PDF .*$$//' \
+			              | sed -re 's/^(<!-- START GIT_MARKDOWN .*-->)/\1<!--/'  \
+			              | sed -re 's/^(<!-- END GIT_MARKDOWN .*-->)/-->\1/'     \
+			              > $(BUILD_DIR)/readme_tmp.md && \
+			pandoc "$(BUILD_DIR)/readme_tmp.md" \
+				--pdf-engine=xelatex \
+				-f markdown \
+				-H SRC/DOCU/readme.sty \
+				-V linkcolor:blue \
+				-V geometry:a4paper \
+				-V geometry:margin=30mm \
+				-V mainfont="DejaVu Serif" \
+				-V monofont="DejaVu Sans Mono" \
+				-o "readme.pdf"; \
+			rm -f $(BUILD_DIR)/readme_tmp.md \
+		else \
+			echo "* readme.pdf seems to be up to date"; \
+		fi \
+	else \
+		echo "* Error: readme.md is missing!"; \
+	fi
 
 build_dirs:
 	@echo "* Creating/checking directories"
@@ -316,34 +327,41 @@ build_json:
 	@$(if $(filter $(STAGE),testing), $(eval TESTING :="true"), $(eval TESTING := "false"))
 	@echo "* Creating $(BUILD_JSON)"
 	@rm -f $(BUILD_JSON)
-	$(PYSTACHE) $(SPEC)   "{ \"M_TODAY\"      : \"$(TODAY)\",         \
-	                         \"M_STAGE\"      : \"$(STAGE)\",         \
-	                         \"M_ORGNAME\"    : \"$(ORGNAME)\",       \
-	                         \"M_ORGPREFIX\"  : \"$(ORGPREFIX)\",     \
-	                         \"M_TESTPREFIX\" : \"$(TESTPREFIX)\",    \
-	                         \"M_ALLINC\"     : \"$(ALLINCLUSIVE)\",  \
-	                         \"M_KEEPFILES\"  : \"$(KEEPFILES)\",     \
-	                         \"M_TESTING\"    : \"$(TESTING)\"        }" > $(BUILD_JSON)
-
+	@echo "{\n\
+              \"M_TODAY\"      : \"$(TODAY)\",\n\
+              \"M_STAGE\"      : \"$(STAGE)\",\n\
+              \"M_ORGNAME\"    : \"$(ORGNAME)\",\n\
+              \"M_ORGPREFIX\"  : \"$(ORGPREFIX)\",\n\
+              \"M_TESTPREFIX\" : \"$(TESTPREFIX)\",\n\
+              \"M_ALLINC\"     : \"$(ALLINCLUSIVE)\",\n\
+              \"M_KEEPFILES\"  : \"$(KEEPFILES)\",\n\
+              \"M_TESTING\"    : \"$(TESTING)\"\n}"      > $(TMP_FILE)
+	@cat  $(TMP_FILE)
+	@$(MUSTACHE) $(TMP_FILE) $(SPEC)	 > $(BUILD_JSON)
+	@rm -f $(TMP_FILE)
 
 download: build_json
 	@echo "**Debug** [ALLINC=$(ALLINCLUSIVE)]  [ONLY_DOWNLOAD=$(ONLY_DOWNLOAD)]"
 	@if [ "$(ALLINCLUSIVE)" = "true" -o  $(ONLY_DOWNLOAD) = "true" ]; then \
 		rm -f $(DOWNLOAD_SH) ;\
-		$(PYSTACHE) $(DOWNLOAD_SH_IN) $(BUILD_JSON) > $(DOWNLOAD_SH) ;\
+		$(MUSTACHE) $(BUILD_JSON) $(DOWNLOAD_SH_IN) > $(DOWNLOAD_SH) ;\
 		chmod +x $(DOWNLOAD_SH) ;\
 		if [ ! -d "$(DL_DIR)" ]; then mkdir -p "$(DL_DIR)"; fi ;\
 		DEST_DIR=$(DL_DIR) $(DOWNLOAD_SH) ;\
 	fi
 	
 	
-build: download clean copy_from_src
+build: download pdf clean copy_from_src
 	@make build_json
 	
+	@echo "* Creating $(CONTROL)"
+	@rm -f $(CONTROL)
+	@$(MUSTACHE) $(BUILD_JSON) $(CONTROL_IN) > $(CONTROL)
+
 	for F in $(FILES_OPSI_IN); do \
 		echo "* Creating OPSI/$$F"; \
 		rm -f $(BUILD_DIR)/OPSI/$$F; \
-		${PYSTACHE} $(SRC_DIR)/OPSI/$$F.in $(BUILD_JSON) > $(BUILD_DIR)/OPSI/$$F; \
+		$(MUSTACHE) $(BUILD_JSON) $(SRC_DIR)/OPSI/$$F.in > $(BUILD_DIR)/OPSI/$$F; \
 	done
 
 	for E in txt md pdf; do \
@@ -366,8 +384,8 @@ build: download clean copy_from_src
 	
 	for F in $(FILES_IN); do \
 		echo "* Creating CLIENT_DATA/$$F"; \
-		rm -f $(BUILD_DIR)/CLIENT_DATA/$$F; \
-		${PYSTACHE} $(SRC_DIR)/CLIENT_DATA/$$F.in $(BUILD_JSON) > $(BUILD_DIR)/CLIENT_DATA/$$F; \
+		rm -f $(BUILD_DIR)CLIENT_DATA/$$F; \
+		${MUSTACHE} $(BUILD_JSON) $(SRC_DIR)/CLIENT_DATA/$$F.in > $(BUILD_DIR)/CLIENT_DATA/$$F; \
 	done
 	chmod +x $(BUILD_DIR)/CLIENT_DATA/*.sh
 	
