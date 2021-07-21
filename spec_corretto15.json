@@ -1,6 +1,6 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "11",
+	"O_PKG_VER"         : "12",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
@@ -14,6 +14,7 @@
 	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-jdk/blob/216fca10a21d6a26ca2846d4ca2861ea644a7a1e/CHANGELOG.md#january-2021-critical-patch-update-corretto-version-150271",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto",
 	"O_SOFTWARE_DL_X64"	: "",
+	"O_ADVICE"          : "This is the last release of OpenJDK 15 (release date: 2021-01-22). You should update to OpenJDK 16 or newer!",
 	
 
 	"_":"=== conditions ===",

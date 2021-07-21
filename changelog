@@ -1,3 +1,14 @@
+amazon-corretto-(8.302.08.1|11.0.12.7.1|16.0.1.9.1)-12:
+	* product updates
+		* corretto 8 -> 8.302.08.1
+		* corretto 11 -> 11.0.12.7.1
+	* corretto 8 splittet MSI for JDK and JRE; use only JDK
+	* copy changelog and readme.pdf also to CLIENT_DATA
+	* adjusted control for a better visibility in OPSI kiosk (added keyword JAVA)
+	* maintainer, organization, release date moved from advice to description
+	* additional advice in JSON configurations
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-21 08:44:23 +0200
+
 amazon-corretto-16.0.1.9.1-11:
 	* product update: corretto16 -> 16.0.1.9.1
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-23 08:56:31 +0200

@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 09:15:50 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-21 08:24:44 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -336,10 +336,18 @@ set $ProductVersionFilter$ = $ProductMajor$ + ".*"
 
 Switch $sw_arch$
 	Case "32"
-		Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x86"
+		if ($ProductMajor$ = "8")
+			Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x86-jdk"
+		else
+			Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x86"
+		endif
 	EndCase
 	Case "64"
-		Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x64"
+		if ($ProductMajor$ = "8")
+			Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x64-jdk"
+		else
+			Set $INSTALLER_BASE$	= "amazon-corretto-{{O_SOFTWARE_VER}}-windows-x64"
+		endif
 	EndCase	
 	DefaultCase
 		isFatalError	"Unsupported architecture: " + $sw_arch$

@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 2.3.0
+# Version: 2.4.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2021-04-22 16:03:30 +0200
+# 2021-07-21 08:30:12 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
@@ -13,7 +13,7 @@ DEFAULT_SPEC = spec.json
 DEFAULT_ALLINC = true
 DEFAULT_KEEPFILES = false
 DEFAULT_ARCHIVEFORMAT = cpio
-### to keep the changelog inside the control set CHANGELOG_TGT to an empty strin
+### to keep the changelog inside the control set CHANGELOG_TGT to an empty string
 ### otherwise the given filename will be used:
 CHANGELOG_TGT = changelog.txt
 # CHANGELOG_TGT =
@@ -138,7 +138,7 @@ var_test:
 	@for F in `ls -1 $(DL_DIR)/$(FILES_MASK) | sed -re 's/.*\/(.*)$$/\1/' `; do echo "    $$F"; done 
 	@ $(eval NUM_FILES := $(shell ls -l $(DL_DIR)/$(FILES_MASK) 2>/dev/null | wc -l))
 	@echo "* $(NUM_FILES) files found"
-	@echo "=================================================================="	
+	@echo "=================================================================="
 
 
 header:
@@ -146,7 +146,7 @@ header:
 	@echo "                      Building OPSI package(s)"
 	@echo "=================================================================="
 
-fix_rights:
+fix_rights: header
 	@echo "---------- setting rights for PACKAGES folder --------------------"
 	chgrp -R opsiadmin $(PACKAGE_DIR)
 	chmod g+rx $(PACKAGE_DIR)
@@ -201,15 +201,15 @@ o4i_test_noprefix: header
 			STAGE="testing"  \
 	build
 
-clean_packages:
+clean_packages: header
 	@echo "---------- cleaning packages, checksums and zsync ----------------"
 	@rm -f $(PACKAGE_DIR)/*.md5 $(PACKAGE_DIR)/*.opsi $(PACKAGE_DIR)/*.zsync
 	
-clean:
+clean: header
 	@echo "---------- cleaning  build directory -----------------------------"
 	@rm -rf $(BUILD_DIR)	
 	
-realclean: clean
+realclean: header clean
 	@echo "---------- cleaning  download directory --------------------------"
 	@rm -rf $(DL_DIR)	
 		
@@ -223,21 +223,21 @@ help: header
 	@echo "	o4i_test_noprefix"	
 	@echo "	all_prod"
 	@echo "	all_test"
-	@echo "	fix_rights"
+	@echo "	fix_rights            - fix rights for package directory"
 	@echo "	clean"
 	@echo "	clean_packages"
 	@echo "	download              - download installation archive(s) from vendor"
 	@echo "	pdf                   - create PDF from readme.md (req. pandoc)"
 	@echo ""
 	@echo "Options:"
-	@echo "	SPEC=<filename>                 (default: spec.json)"
+	@echo "	SPEC=<filename>                 (default: $(DEFAULT_SPEC))"
 	@echo "			Use the given alternative spec file."
-	@echo "	ALLINC=[true|false]             (default: false)"
+	@echo "	ALLINC=[true|false]             (default: $(DEFAULT_ALLINC))"
 	@echo "			Include software in OPSI package?"
-	@echo "	KEEPFILES=[true|false]          (default: false)"
-	@echo "			Keep really all previous files from files/?"
+	@echo "	KEEPFILES=[true|false]          (default: $(DEFAULT_KEEPFILES))"
+	@echo "			Keep really all previous files from files?"
 	@echo "			If false only files matching this package version are kept."
-	@echo "	ARCHIVE_FORMAT=[cpio|tar]       (default: cpio)"
+	@echo "	ARCHIVE_FORMAT=[cpio|tar]       (default: $(DEFAULT_ARCHIVEFORMAT))"
 	@echo ""
 
 pdf:
@@ -264,7 +264,7 @@ pdf:
 				-V mainfont="DejaVu Serif" \
 				-V monofont="DejaVu Sans Mono" \
 				-o "readme.pdf"; \
-			rm -f $(BUILD_DIR)/readme_tmp.md \
+			rm -f $(BUILD_DIR)/readme_tmp.md; \
 		else \
 			echo "* readme.pdf seems to be up to date"; \
 		fi \
@@ -286,16 +286,20 @@ build_md5:
 	fi
 	grep "$(GREP_MASK)" $(DL_DIR)/$(MD5SUM_FILE)>> $(BUILD_DIR)/CLIENT_DATA/$(MD5SUM_FILE) ; \
 	
-	
+
 copy_from_src:	build_dirs build_md5
 	@echo "* Copying files"
-	@cp -upL $(SRC_DIR)/CLIENT_DATA/LICENSE  $(BUILD_DIR)/CLIENT_DATA/
-	@cp -upL $(SRC_DIR)/CLIENT_DATA/readme.md  $(BUILD_DIR)/CLIENT_DATA/
-	@cp -upr $(SRC_DIR)/CLIENT_DATA/bin  $(BUILD_DIR)/CLIENT_DATA/
+	@cp -upL $(SRC_DIR)/CLIENT_DATA/LICENSE   $(BUILD_DIR)/CLIENT_DATA/
+	@cp -upL $(SRC_DIR)/CLIENT_DATA/readme.md $(BUILD_DIR)/CLIENT_DATA/
+	@cp -upr $(SRC_DIR)/CLIENT_DATA/bin       $(BUILD_DIR)/CLIENT_DATA/
 	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsiscript  $(BUILD_DIR)/CLIENT_DATA/
 	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsiinc     $(BUILD_DIR)/CLIENT_DATA/
-	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsifunc     $(BUILD_DIR)/CLIENT_DATA/
-	@ $(eval NUM_FILES := $(shell ls -l $(DL_DIR)/$(FILES_MASK) 2>/dev/null | wc -l))
+	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsifunc    $(BUILD_DIR)/CLIENT_DATA/
+
+	@if [ -f  "readme.pdf" ] ; then cp -upL readme.pdf   $(BUILD_DIR)/CLIENT_DATA/; fi
+	@if [ -f  "changelog" ]  ; then cp -upL changelog    $(BUILD_DIR)/CLIENT_DATA/changelog.txt; fi
+
+	@$(eval NUM_FILES := $(shell ls -l $(DL_DIR)/$(FILES_MASK) 2>/dev/null | wc -l))
 	@if [ "$(ALLINCLUSIVE)" = "true" ]; then \
 		echo "  * building batteries included package"; \
 		if [ ! -d "$(BUILD_DIR)/CLIENT_DATA/files" ]; then \
@@ -312,8 +316,8 @@ copy_from_src:	build_dirs build_md5
 		rm -rf $(BUILD_DIR)/CLIENT_DATA/files ; \
 	fi
 	@if [ -d "$(SRC_DIR)/CLIENT_DATA/custom" ]; then  cp -upr $(SRC_DIR)/CLIENT_DATA/custom     $(BUILD_DIR)/CLIENT_DATA/ ; fi
-	@if [ -d "$(SRC_DIR)/CLIENT_DATA/files" ];  then  cp -upr $(SRC_DIR)/CLIENT_DATA/files      $(BUILD_DIR)/CLIENT_DATA/ ; fi
-	@if [ -d "$(SRC_DIR)/CLIENT_DATA/images" ];  then  \
+	@if [ -d "$(SRC_DIR)/CLIENT_DATA/files" ] ; then  cp -upr $(SRC_DIR)/CLIENT_DATA/files      $(BUILD_DIR)/CLIENT_DATA/ ; fi
+	@if [ -d "$(SRC_DIR)/CLIENT_DATA/images" ]; then  \
 		mkdir -p "$(BUILD_DIR)/CLIENT_DATA/images"; \
 		cp -up $(SRC_DIR)/CLIENT_DATA/images/*.png  $(BUILD_DIR)/CLIENT_DATA/images/; \
 	fi
@@ -384,10 +388,14 @@ build: download pdf clean copy_from_src
 	
 	for F in $(FILES_IN); do \
 		echo "* Creating CLIENT_DATA/$$F"; \
-		rm -f $(BUILD_DIR)CLIENT_DATA/$$F; \
+		rm -f $(BUILD_DIR)/CLIENT_DATA/$$F; \
 		${MUSTACHE} $(BUILD_JSON) $(SRC_DIR)/CLIENT_DATA/$$F.in > $(BUILD_DIR)/CLIENT_DATA/$$F; \
 	done
-	chmod +x $(BUILD_DIR)/CLIENT_DATA/*.sh
+	@if [ "$(ALLINCLUSIVE)" = "true" ]; then \
+		rm -f $(BUILD_DIR)/CLIENT_DATA/product_downloader.sh; \
+	fi
+	find $(BUILD_DIR)/CLIENT_DATA -type f -name "*.sh" -exec chmod +x {} \;
+	@#chmod +x $(BUILD_DIR)/CLIENT_DATA/*.sh; \
 	
 	@echo "* OPSI Archive Format: $(BUILD_FORMAT)"
 	@echo "* Building OPSI package"
@@ -403,8 +411,8 @@ build: download pdf clean copy_from_src
 	cd $(CURDIR)
 
 
-all_test:  header mpimsp_test o4i_test dfn_test dfn_test_0
+all_test:  header download mpimsp_test o4i_test dfn_test dfn_test_0
 
-all_prod : header mpimsp o4i dfn
+all_prod : header download mpimsp o4i dfn
 
-all : header mpimsp o4i dfn mpimsp_test o4i_test dfn_test
+all : header download mpimsp o4i dfn mpimsp_test o4i_test dfn_test
