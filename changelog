@@ -1,3 +1,11 @@
+amazon-corretto-(8.x|11.y|16.z)-13:
+	* product updates
+		* corretto 8 ->
+		* corretto 11 ->
+        * corretto 16 ->
+	* UTF-8 encoding for [setup|uninstall].opsiscript
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-22 11:32:49 +0200
+
 amazon-corretto-(8.302.08.1|11.0.12.7.1|16.0.1.9.1)-12:
 	* product updates
 		* corretto 8 -> 8.302.08.1

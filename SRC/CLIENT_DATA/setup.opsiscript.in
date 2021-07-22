@@ -2,12 +2,13 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 14:36:51 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-22 11:25:18 +0200
 ;======================================================================
 
 ;======================================================================
 [Initial]
 ;======================================================================
+encoding=utf8
 setLogLevel=5
 ; Log Errors in Logfile and abort:
 ExitOnError=true
