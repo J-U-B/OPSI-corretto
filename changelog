@@ -1,3 +1,10 @@
+amazon-corretto-17.0.0.35.1-14:
+	* new package for Corretto 17 (LTS) -> 16.0.2.7.1
+	* updated documentation
+	* adjustment for new package in product_variables.opsiinc.in
+	* fixed Makefile (removed dfn leftovers)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-09-16 12:19:17 +0200
+
 amazon-corretto-16.0.2.7.1-13:
 	* product update: corretto 16 -> 16.0.2.7.1
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-08-09 07:50:51 +0200

@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 2.4.0
+# Version: 2.4.1
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2021-07-21 08:30:12 +0200
+# 2021-09-16 11:53:08 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
@@ -411,8 +411,8 @@ build: download pdf clean copy_from_src
 	cd $(CURDIR)
 
 
-all_test:  header download mpimsp_test o4i_test dfn_test dfn_test_0
+all_test:  header download mpimsp_test o4i_test
 
-all_prod : header download mpimsp o4i dfn
+all_prod : header download mpimsp o4i
 
-all : header download mpimsp o4i dfn mpimsp_test o4i_test dfn_test
+all : header download mpimsp o4i mpimsp_test o4i_test
