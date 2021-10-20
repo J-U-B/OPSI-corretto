@@ -1,5 +1,11 @@
+amazon-corretto-(8.312.07.1|11.0.13.8.1)-9:
+	* product updates
+		* corretto 8 -> 8.312.07.1
+		* corretto 11 -> 11.0.13.8.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 14:04:59 +0200
+
 amazon-corretto-17.0.0.35.1-14:
-	* new package for Corretto 17 (LTS) -> 16.0.2.7.1
+	* new package for Corretto 17 (LTS) -> 17.0.0.35.1
 	* updated documentation
 	* adjustment for new package in product_variables.opsiinc.in
 	* fixed Makefile (removed dfn leftovers)
