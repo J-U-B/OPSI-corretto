@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-09-16 12:09:04 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-01-18 19:33:01 +0100
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -254,11 +254,7 @@ include_append "%ScriptPath%\exitcode_nsis.opsiinc"
 ;-----------------------------------------------------------
 ;*** logs
 ;-----------------------------------------------------------
-if $isO4I$ = "true"
-	Set $LogDir$		= "%opsiLogDir%"
-else
-	Set $LogDir$		= "%SystemDrive%\tmp"
-endif
+Set $LogDir$			= "%opsiLogDir%"
 Set $InstallLog$		= $LogDir$ + "\"+$FullProductId$+"_install.log"
 Set $UninstallLog$		= $LogDir$ + "\"+$FullProductId$+"_uninstall.log"
 

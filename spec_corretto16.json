@@ -1,6 +1,6 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "14",
+	"O_PKG_VER"         : "15",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 	
@@ -11,10 +11,10 @@
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",
 	"O_SOFTWARE_DL_PAGE": "https://docs.aws.amazon.com/corretto/latest/corretto-16-ug/downloads-list.html",
-	"O_SOFTWARE_CHANGES": "https://raw.githubusercontent.com/corretto/corretto-jdk/release-16.0.2.7.1/CHANGELOG.md",
-	"O_SOFTWARE_GIT"    : "https://github.com/corretto/corretto-jdk/",
+	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-jdk/blob/ab21011b/CHANGELOG.md#corretto-version-160271",
+	"O_SOFTWARE_GIT"    : "https://github.com/corretto/corretto-jdk",
 	"O_SOFTWARE_DL_X64"	: "",
-	"O_ADVICE"          : "",
+	"O_ADVICE"          : "This is the last release of OpenJDK 16 (release date: 2021-07-24). You should update to OpenJDK 16 or newer!",
 	
 
 	"_":"=== conditions ===",

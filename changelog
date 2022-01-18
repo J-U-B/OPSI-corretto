@@ -1,4 +1,15 @@
-amazon-corretto-(8.312.07.1|11.0.13.8.1)-9:
+amazon-corretto-(8.322.06.1|11.0.14.9.1|17.0.2.8.1|15.0.2.7.1|16.0.2.7.1)-15:
+	* unified $LogDir$ for internal and o4i releases to "%opsiLogDir%"
+	* product updates
+		* corretto 8 -> 8.322.06.1
+		* corretto 11 -> 11.0.14.9.1
+		* corretto 17 -> 17.0.2.8.1
+	* final release
+		* corretto 15 = 15.0.2.7.1
+		* corretto 16 = 16.0.2.7.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2022-01-18 21:04:09 +0100
+
+amazon-corretto-(8.312.07.1|11.0.13.8.1)-14:
 	* product updates
 		* corretto 8 -> 8.312.07.1
 		* corretto 11 -> 11.0.13.8.1
