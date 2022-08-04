@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 2.4.1
+# Version: 2.5.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2021-09-16 11:53:08 +0200
+# 2022-08-04 10:37:49 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
@@ -52,6 +52,12 @@ ifeq ($(shell test -f $(SPEC) && echo OK),OK)
     $(info * spec file found: $(SPEC))
 else
     $(error Error: spec file NOT found: $(SPEC))
+endif
+
+ifeq ($(SPEC),spec.json)
+	DEFAULT_ALLINC = true
+else
+	DEFAULT_ALLINC = false
 endif
 
 ### Only download packages?

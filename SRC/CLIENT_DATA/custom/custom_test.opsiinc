@@ -1,2 +1,20 @@
-message "testing custom script...."
-sleepseconds 2
+;=====================================================================
+; Custom scripts example
+;
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-07-07 08:12:41 +0200
+;=====================================================================
+encoding=utf8
+logWarning "please call sections in custom scripts...."
+sleepseconds 1
+
+;-----------------------------------------------------------
+[SUB_POST_INSTALL]
+;-----------------------------------------------------------
+message "testing custom post INSTALL script...."
+sleepseconds 1
+
+;-----------------------------------------------------------
+[SUB_POST_UNINSTALL]
+;-----------------------------------------------------------
+message "testing custom post UNINSTALL script...."
+sleepseconds 1

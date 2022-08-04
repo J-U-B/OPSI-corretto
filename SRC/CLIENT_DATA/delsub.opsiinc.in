@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 14:39:46 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 10:26:54 +0200
 ;=====================================================================
 
 
@@ -40,21 +40,29 @@ if not ( count ($ResultList$) = "0" )
 		endif
 	endif
 	{{/ifdef_property_kill_running}}
-	
+
 	if ($ActionRequest$="uninstall") OR ($pr_PreUninst$ = "True")
 		;=== process uninstall for all found uninstall sections:
 		for %id% in $ResultList$ do sub_Uninstall_ID
-		
+
 		;=== custom post uninstall
-		comment "include custom post uninstall file"
 		if not ($CustomPostUninstall$ = "none")
 			if FileExists("%ScriptPath%\custom\" + $CustomPostUninstall$)
 				ShowBitmap $Img_Uninstall_Custom$ $ProductName$
-				include_insert "%ScriptPath%\custom\" + $CustomPostUninstall$
+				comment "Starting custom post uninstall"
+				if LineExistsIn("[SUB_POST_INSTALL]", "%ScriptPath%\custom\" + $CustomPostUninstall$)
+					include_append "%ScriptPath%\custom\" + $CustomPostUninstall$
+					comment "calling section: SUB_POST_INSTALL"
+					SUB_POST_UNINSTALL
+				else
+					comment "calling section: Sub_UninstallAppendix"
+					Sub_UninstallAppendix
+				endif
 				ShowBitmap $Img_Uninstall$ $ProductName$
+			else
+				logError "Can't find custom post uninstall script: %ScriptPath%\custom\" + $CustomPostUninstall$
 			endif
-		endif	
-		
+		endif
 
 	else
 		comment "Uninstallation skipped"
@@ -304,3 +312,10 @@ deleteVar "CurrentVersion"
 deleteKey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$CurrentVersion$]
 
 
+;======================================================================
+[Sub_UninstallAppendix]
+;======================================================================
+include_insert "%ScriptPath%\custom\" + $CustomPostUninstall$
+
+
+[EOF_delsub]

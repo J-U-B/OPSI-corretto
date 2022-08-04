@@ -1,3 +1,22 @@
+amazon-corretto-(8.342.07.3|11.0.16.8.1|17.0.4.8.1|18.0.2.9.1)-16:
+	* changed handling of custom scripts (use SUB_POST_INSTALL and SUB_POST_UNINSTALL sections (optional))
+	* added [EOF_*] sections to setup and delsub (for incorrectly structured custom scripts)
+	* updated custom script examples
+	* Makefile: assume default for ALLINC true only for spec.json, otherwise false
+	* adjusted product_variables for Java 18
+	* updated readme for Corretto 18
+	* product updates
+		* corretto 8  -> 8.342.07.3
+		* corretto 11 -> 11.0.16.8.1
+		* corretto 17 -> 17.0.4.8.1
+	* new product:
+		* corretto 18 -> 18.0.2.9.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 12:08:19 +0200
+
+amazon-corretto-11.0.14.10.1-15:
+	* product update corretto 11 -> 11.0.14.10.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2022-02-10 14:55:15 +0100
+
 amazon-corretto-(8.322.06.1|11.0.14.9.1|17.0.2.8.1|15.0.2.7.1|16.0.2.7.1)-15:
 	* unified $LogDir$ for internal and o4i releases to "%opsiLogDir%"
 	* product updates

@@ -1,8 +1,8 @@
 ;======================================================================
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
-; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-22 11:25:18 +0200
+;
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 10:27:04 +0200
 ;======================================================================
 
 ;======================================================================
@@ -157,19 +157,28 @@ else
 
 
 	;=== custom post install
-	comment "include custom post install file"
 	if not ($CustomPostInstall$ = "none")
 		if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
 			ShowBitmap $Img_Install_Custom$ $ProductName$
-			include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+			comment "Starting custom post install"
+			if LineExistsIn("[SUB_POST_INSTALL]", "%ScriptPath%\custom\" + $CustomPostInstall$)
+				include_append "%ScriptPath%\custom\" + $CustomPostInstall$
+				comment "calling section: SUB_POST_INSTALL"
+				SUB_POST_INSTALL
+			else
+				comment "calling section: Sub_InstallAppendix"
+				Sub_InstallAppendix
+			endif
 			ShowBitmap $Img_Install$ $ProductName$
+		else
+			logError "Can't find custom post install script: %ScriptPath%\custom\" + $CustomPostInstall$
 		endif
 	endif
-	
+
 	;=== measure installation time
 	set $TimeDiff$ = getDiffTimeSec
-	Message  "Setup time: " + $TimeDiff$ + " seconds"	
-	
+	Message  "Setup time: " + $TimeDiff$ + " seconds"
+
 endif
 
 
@@ -255,3 +264,12 @@ openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER$]
 set "JavaHome"="$JAVA_HOME$"
 openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment]
 set "CurrentVersion"="$JAVA_VER$"
+
+
+;=====================================================================
+[Sub_InstallAppendix]
+;=====================================================================
+include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+
+
+[EOF_setup]
