@@ -96,6 +96,11 @@ Die <code>spec_corretto*.json</code> resultieren in Paketen, in denen
 die Major-Release Bestandteil der ProductId ist. Dies ermoeglicht die parallele
 Installation mehrerer Releases.
 
+json-Files für Corretto-Versionen, die bereits *end of life* sind, finden
+sich noch im Verzeichnis `legacy_spec` und werden nicht mehr aktualisiert.  
+Ohne zwingenden Grund sollten für diese Versionen keine neuen Pakete mehr 
+erstellt werden.
+
 
 <div id="mustache"></div>
 
@@ -377,4 +382,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2022-08-04 12:03:50 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2022-08-08 11:30:04 +0200
