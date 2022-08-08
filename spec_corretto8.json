@@ -1,9 +1,9 @@
-{  
+{
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "16",
+	"O_PKG_VER"         : "17",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
-	
+
 	"O_SOFTWARE"        : "corretto8",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 8",
 	"O_SOFTWARE_VER"    : "8.342.07.3",

@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-04-22 13:28:59 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:26:31 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -101,6 +101,7 @@ DefVar $RegPathUninstall64$
 DefVar $RegProductID$
 DefVar $RegSearchOpts$
 DefVar $result$
+DefVar $RuntimeLib$
 DefVar $SearchPattern$
 DefVar $SEVENZIP$
 DefVar $SpaceReqInstall$

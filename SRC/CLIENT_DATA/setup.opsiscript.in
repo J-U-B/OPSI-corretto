@@ -2,7 +2,7 @@
 ; setup.opsiscript AMAZON CORRETTO (MSI)
 ; Installer type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 10:27:04 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 15:24:32 +0200
 ;======================================================================
 
 ;======================================================================
@@ -94,15 +94,21 @@ else
 	; ----------------------------------------------------
 	; ToDo: check for existence of characteristic binaries
 	; ----------------------------------------------------
-	;set $MainBin$ = $InstallDir$+$CheckBin$
-	;if not (FileExists($MainBin$))
-	;	logError "Main binary not found! [" + $MainBin$ + "]"
-	;	isFatalError
-	;endif
-	
+	; set $MainBin$ = $InstallDir$+$CheckBin$
+	set $MainBin$ = $PathToExe$
+	if not (FileExists($MainBin$))
+		logError "Main binary not found! [" + $MainBin$ + "]"
+		isFatalError
+	endif
+
+	if not (FileExists($RuntimeLib$))
+		logError "Runtime lib not found! [" + $RuntimeLib$ + "]"
+		isFatalError
+	endif
+
 	;=== configure settings and workarounds:
 	ShowBitmap $Img_Config$ $ProductName$
-	
+
 	set $ResultList$ = shellCall('dir /b "' + $InstallDir$ +'"')
 	if count($ResultList$) INT>= "1"
 		if (($ProductMajor$ INT> "8") and (count($ResultList$) INT= "1")) or (($ProductMajor$ INT= "8") and (count($ResultList$) INT= "2"))
@@ -132,10 +138,10 @@ else
 			ShellInAnIcon_SetFtypeAndAssoc
 		else
 			logError "Path for main binary is empty or file not found: [" + $MainBin$ + "]"
-		endif		
+		endif
 	endif
-	
-	if ($ProductMajor$ = "11") and not ($JAVA_HOME$ = "")
+
+	if ($ProductMajor$ INT>= "11") and not ($JAVA_HOME$ = "")
 		; fix some missing registry keys in HKLM\SOFTWARE\JavaSoft
 		Switch $sw_arch$
 			Case "32"
@@ -263,6 +269,12 @@ set "CurrentVersion"="$JAVA_VER$"
 openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$JAVA_VER$]
 set "JavaHome"="$JAVA_HOME$"
 openkey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment]
+set "CurrentVersion"="$JAVA_VER$"
+
+openkey [HKLM\SOFTWARE\JavaSoft\JRE\$JAVA_VER$]
+set "JavaHome"="$JAVA_HOME$"
+set "RuntimeLib"="$JAVA_HOME$\bin\server\jvm.dll"
+openkey [HKLM\SOFTWARE\JavaSoft\JRE]
 set "CurrentVersion"="$JAVA_VER$"
 
 

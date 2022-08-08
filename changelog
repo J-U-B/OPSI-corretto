@@ -1,3 +1,9 @@
+amazon-corretto-(8.342.07.3|11.0.16.8.1|17.0.4.8.1|18.0.2.9.1)-17:
+	* added HKLM\SOFTWARE\JavaSoft\JRE to registry
+	* added check for main binary (java.exe) and runtime library (jvm.dll)
+	* fixed: fix some missing registry keys in HKLM\SOFTWARE\JavaSoft for Java >=11
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 15:48:47 +0200
+
 amazon-corretto-(8.342.07.3|11.0.16.8.1|17.0.4.8.1|18.0.2.9.1)-16:
 	* changed handling of custom scripts (use SUB_POST_INSTALL and SUB_POST_UNINSTALL sections (optional))
 	* added [EOF_*] sections to setup and delsub (for incorrectly structured custom scripts)

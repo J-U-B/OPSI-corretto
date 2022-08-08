@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 11:21:34 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:27:54 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -281,8 +281,8 @@ Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$
 
 ; Set $CheckBin$      	= "bin\" + $StrippedProductId$ +".exe"
 Set $CheckBin$      	= "%\" + $PathPrefix$ + "%\bin\%.exe"
-; Set $PathToExe$			= $InstallDir$ + $CheckBin$
-Set $PathToExe$			= $InstallDir$ + "%\bin\java.exe"
+Set $PathToExe$			= $InstallDir$ + $JAVA_SUB_DIR$ + "\bin\java.exe"
+Set $RuntimeLib$		= $InstallDir$ + $JAVA_SUB_DIR$ + "\bin\server\jvm.dll"
 
 ;-------------------------------------------------------
 ; filter for opsiServiceCall productOnClient_getObjects:

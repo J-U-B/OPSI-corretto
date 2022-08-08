@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-04 10:26:54 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:05:32 +0200
 ;=====================================================================
 
 
@@ -310,6 +310,10 @@ deleteKey [HKLM\SOFTWARE\JavaSoft\Java Development Kit\$CurrentVersion$]
 openKey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment]
 deleteVar "CurrentVersion"
 deleteKey [HKLM\SOFTWARE\JavaSoft\Java Runtime Environment\$CurrentVersion$]
+
+openKey [HKLM\SOFTWARE\JavaSoft\JRE]
+deleteVar "CurrentVersion"
+deleteKey [HKLM\SOFTWARE\JavaSoft\JRE\$CurrentVersion$]
 
 
 ;======================================================================
