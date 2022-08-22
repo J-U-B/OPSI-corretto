@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:27:54 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-22 16:05:38 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -267,11 +267,15 @@ Set $InstallerType$   		= "{{O_USE_INSTALLER}}"
 Set $JAVA_VER_FULL$		= "{{O_SOFTWARE_VER}}"
 Set $TempList$			= splitString ($JAVA_VER_FULL$,".")
 Set $JAVA_VER$			= takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$)
-; works only for Java > 8:
-Set $JAVA_SUB_DIR$		= "jdk" + $JAVA_VER$ + "_" + takestring(3,$TempList$)
 Set $ProductMajor$		= takeString(0, splitString ($JAVA_VER_FULL$,"."))
+if $ProductMajor$ = "8"
+	Set $JAVA_SUB_DIR$	= "jdk1.8.0_" + takestring(1,$TempList$)
+else
+	; works only for Java > 8:
+	Set $JAVA_SUB_DIR$	= "jdk" + $JAVA_VER$ + "_" + takestring(3,$TempList$)
+endif
 
-Set $SrcDir$			= "%ScriptPath%\files\" 
+Set $SrcDir$			= "%ScriptPath%\files\"
 Set $PathPrefix$		= "Corretto" + $ProductMajor$ + "\"
 
 ;Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$ + stringReplace($ProductName$," ", "") + "\"
@@ -282,7 +286,11 @@ Set $InstallDir$      	= $InstallBase$ + "\" + $PathPrefix$
 ; Set $CheckBin$      	= "bin\" + $StrippedProductId$ +".exe"
 Set $CheckBin$      	= "%\" + $PathPrefix$ + "%\bin\%.exe"
 Set $PathToExe$			= $InstallDir$ + $JAVA_SUB_DIR$ + "\bin\java.exe"
-Set $RuntimeLib$		= $InstallDir$ + $JAVA_SUB_DIR$ + "\bin\server\jvm.dll"
+if $ProductMajor$ = "8"
+	Set $RuntimeLib$	= $InstallDir$ + $JAVA_SUB_DIR$ + "\jre\bin\server\jvm.dll"
+else
+	Set $RuntimeLib$	= $InstallDir$ + $JAVA_SUB_DIR$ + "\bin\server\jvm.dll"
+endif
 
 ;-------------------------------------------------------
 ; filter for opsiServiceCall productOnClient_getObjects:
