@@ -1,4 +1,4 @@
-# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 15 / 16 / 17 / 18") Amazon Corretto 8 / 11 / 15 / 16 / 17 / 18
+# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 15 / 16 / 17 / 18 / 19") Amazon Corretto 8 / 11 / 15 / 16 / 17 / 18 / 19
 
 ## ToC ##
 
@@ -33,8 +33,8 @@
 ## Paketinfo ##
 
 Dieses OPSI-Paket (bzw. dessen Quellen) fuer Java-LTS-releases **Amazon Corretto 8**,
-**Amazon Corretto 11** und **Amazon Corretto 17** sowie fuer die nicht-LTS-Release
-**Amazon Corretto 18**
+**Amazon Corretto 11** und **Amazon Corretto 17** sowie fuer die nicht-LTS-Releases
+**Amazon Corretto 18** und **Amazon Corretto 19**
 deckt das *Java Development Kit* inklusive *Runtime* fuer die jeweiligen Releases
 ab. Eine separate JRE wird nicht mehr angeboten.  
 Pakete für **Amazon Corretto 15** und **Amazon Corretto 16** können zwar ebenfalls
@@ -382,4 +382,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2022-08-08 11:30:04 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2022-09-21 10:20:32 +0200
