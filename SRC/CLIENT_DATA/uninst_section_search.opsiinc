@@ -1,10 +1,7 @@
 ;======================================================================
 ; unist_section_search.opsiinc
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-10-30 18:24:35 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-10-19 16:17:30 +0200
 ;======================================================================
-; based on:
-; https://opsi.wzb.eu/wiki/index.php/Uninstall-Registry_durchsuchen_und_Schlüssel_ermitteln
-;
 ; * searching 64 bit AND 32 bit tree in this order
 ;======================================================================
 
@@ -17,7 +14,6 @@
 ; Set $RegSearchOpts$ = "/k"
 Set $RegSearchOpts$ = '/s /d  /f "' + $SearchPattern$ + '"'
 
-DefStringList $TempList$
 ;** "Unset" erforderlich, da evtl. dieses Sub mehrmals genutzt wird und 
 ;** alte Werte in der Liste sein koennten
 Set $ResultList$ = emptylist ($ResultList$)
