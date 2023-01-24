@@ -1,3 +1,11 @@
+amazon-corretto-(8.362.08.1|11.0.18.10.1|17.0.6.10.1|18.0.2.9.1|19.0.2.7.1)-20:
+	* product updates
+		* corretto 8 -> 8.362.08.1
+		* corretto 11 -> 11.0.18.10.1
+		* corretto 17 -> 17.0.6.10.1
+		* corretto 19 -> 19.0.2.7.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-01-24 16:31:32 +0100
+
 amazon-corretto-(8.352.08.1|11.0.17.8.1|17.0.5.8.1|18.0.2.9.1|19.0.1.10.1)-20:
 	* product updates
 		* corretto 8 -> 8.352.08.1
