@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-22 16:05:38 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-04-24 08:53:45 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -367,9 +367,9 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureAddPath,FeatureSetupJavaHome"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureAddPath,FeatureSetupJavaHome"'
 		else
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv"'
 		endif
 	EndCase
 	Case "11"
@@ -379,7 +379,7 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
@@ -391,7 +391,7 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
@@ -403,7 +403,7 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
@@ -415,7 +415,7 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
@@ -427,7 +427,7 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
@@ -439,7 +439,19 @@ Switch $ProductMajor$
 		;*** select MSI features
 		;---------------------------------
 		if $pr_SetEnv_JavaHome$ = "True"
-			Set $MSI_Features$ 	= 'ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+		else
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
+	EndCase	
+	Case "20"
+		Set $SpaceReqInstall$   = "470"
+		Set $SpaceReqPackage$   = "200"
+		;---------------------------------
+		;*** select MSI features
+		;---------------------------------
+		if $pr_SetEnv_JavaHome$ = "True"
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif

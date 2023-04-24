@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  Amazon Corretto Control                                                   }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2021-06-14 07:52:43 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2023-04-24 08:41:13 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -11,14 +11,16 @@ incremental: False
 type: localboot
 id: {{TESTPREFIX}}{{ORGPREFIX}}{{O_SOFTWARE}}
 name: {{O_SOFTWARE_NAME}}
-description: • No-cost, multiplatform, production-ready distribution of Java (based on OpenJDK) by Amazon
-    • Kostenlose, plattformübergreifende, produktionsbereite Distribution von Java (basierend auf OpenJDK) von Amazon
-    ___
-    WebSite: {{O_SOFTWARE_WEBSITE}}
-    ___
-    Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
-    Organization: {{ORGNAME}}
-    Release date: {{O_RELEASE_DATE}}
+description: ‣ No-cost, multiplatform, production-ready distribution of
+  Java ☕ by Amazon (based on OpenJDK)  
+  ‣ Kostenlose, plattformübergreifende, produktionsbereite Java-Distribution
+  ☕ von Amazon (basierend auf OpenJDK)  
+  ―――――  
+  WebSite: {{O_SOFTWARE_WEBSITE}}  
+  ―――――  
+  Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>  
+  Organization: {{ORGNAME}}  
+  Release date: {{O_RELEASE_DATE}}
 advice: {{O_ADVICE}}
 version: {{O_SOFTWARE_VER}}
 priority: 0

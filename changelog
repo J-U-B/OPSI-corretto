@@ -1,3 +1,18 @@
+amazon-corretto-(8.372.07.1|11.0.19.7.1|17.0.7.7.1|20.0.1.9.1)-21:
+	* removed deprecated INITIAL section from setup.opsiscript and uninstall.opsiscript
+	* moved specs for end-of-life releases Corretto 18 and Corretto 19 to legacy_spec
+	* added support for Corretto 20
+	* small optimization of control file for rendering of decription
+	* remove empty major directory on uninstall (C:\Program Files\CorrettoXY)
+	* updated helpers.opsiinc -> v1.9.1
+	* updated readme.md
+	* product updates
+		* corretto 8  -> 8.372.07.1
+		* corretto 11 -> 11.0.19.7.1
+		* corretto 17 -> 17.0.7.7.1
+		* corretto 20 -> 20.0.1.9.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-04-24 11:25:49 +0200
+
 amazon-corretto-(8.362.08.1|11.0.18.10.1|17.0.6.10.1|18.0.2.9.1|19.0.2.7.1)-20:
 	* product updates
 		* corretto 8 -> 8.362.08.1

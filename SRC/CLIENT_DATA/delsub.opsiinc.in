@@ -2,7 +2,7 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:05:32 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-04-24 11:24:37 +0200
 ;=====================================================================
 
 
@@ -208,6 +208,8 @@ if ($ExitCode$ = "0") and not ($Inst_Loc$ = "")
 		comment "INFO: Install directory still exists: [" + $Inst_Loc$ + "]. Trying to delete."
 		;=== try final cleanup
 		Files_del_InstallDir
+		; delete empty major directory (C:\Program Files\CorrettoXY):
+		set $result$ = PowerShellCall('$head="' + $InstallDir$ + '" ; if ($(Get-Item "$head" | Get-ChildItem -Recurse  | measure).count -eq 0 ) {Remove-Item "$head"}')
 	endif
 endif
 
