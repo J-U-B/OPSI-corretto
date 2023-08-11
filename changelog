@@ -1,3 +1,11 @@
+amazon-corretto-(8.382.05.1|11.0.20.8.1|17.0.8.7.1|20.0.2.9.1)-21:
+	* product updates
+		* corretto 8  -> 8.382.05.1
+		* corretto 11 -> 11.0.20.8.1
+		* corretto 17 -> 17.0.8.7.1
+		* corretto 20 -> 20.0.2.9.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-08-11 09:53:01 +0200
+
 amazon-corretto-(8.372.07.1|11.0.19.7.1|17.0.7.7.1|20.0.1.9.1)-21:
 	* removed deprecated INITIAL section from setup.opsiscript and uninstall.opsiscript
 	* moved specs for end-of-life releases Corretto 18 and Corretto 19 to legacy_spec
