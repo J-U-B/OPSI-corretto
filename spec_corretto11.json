@@ -1,12 +1,12 @@
 {
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "21",
+	"O_PKG_VER"         : "22",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 
 	"O_SOFTWARE"        : "corretto11",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 11",
-	"O_SOFTWARE_VER"    : "11.0.20.8.1",
+	"O_SOFTWARE_VER"    : "11.0.20.9.1",
 	"O_SOFTWARE_BUILD"  : "",
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",

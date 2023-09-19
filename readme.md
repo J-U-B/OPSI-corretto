@@ -74,8 +74,9 @@ Zur Erstellung der OPSI-Pakete aus den vorliegenden Quellen werden neben den
 jeweiligen Distributionen zu beziehen sind.
 Das sind (angegebenen Namen entsprechen Paketen in Debian/Ubuntu):
 
-* <code>make</code>
-* <code>curl</code> bzw. <code>wget</code>
+* `make`
+* `curl` bzw. `wget`
+* `mustache` (im Repository enthalten)
 
 
 <div id="makefile_und_spec"></div>
@@ -120,7 +121,10 @@ nicht mehr zum Einsatz und wurde aus den Quellen entfernt.
 
 ### Verzeichnisstruktur ###
 
-Die erstellten Pakete werden im Unterverzeichnis **<code>BUILD</code>** abgelegt.
+* **<code>PACKAGES</code>** - erstellte Pakete
+* **<code>DOWNLOAD</code>** - heruntergeladene Installationsarchive und md5sums
+* **<code>BUILD</code>** - Arbeitsverzeichnis zur Erstellung der jeweiligen Pakete
+* **<code>SRC</code>** - Skripte und Templates
 
 Einige Files (control, postinst, setup.opsiscript) werden bei der Erstellung erst aus _<code>.in</code>_-Files
 generiert, welche sich in den Verzeichnissen <code>SRC/OPSI</code> und <code>SRC/CLIENT_DATA</code> befinden.
@@ -385,4 +389,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2023-04-24 09:03:53 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2023-09-19 09:35:57 +0200

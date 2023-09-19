@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2023-04-24 08:53:45 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-09-19 11:03:56 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -443,7 +443,7 @@ Switch $ProductMajor$
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
-	EndCase	
+	EndCase
 	Case "20"
 		Set $SpaceReqInstall$   = "470"
 		Set $SpaceReqPackage$   = "200"
@@ -455,10 +455,22 @@ Switch $ProductMajor$
 		else
 			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
 		endif
-	EndCase	
+	EndCase
+	Case "21"
+		Set $SpaceReqInstall$   = "470"
+		Set $SpaceReqPackage$   = "200"
+		;---------------------------------
+		;*** select MSI features
+		;---------------------------------
+		if $pr_SetEnv_JavaHome$ = "True"
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+		else
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
+	EndCase
 	DefaultCase
 		LogError "Unsupported Java major release: " + $ProductMajor$
-		isFatalError	
+		isFatalError
 	EndCase
 EndSwitch
 
