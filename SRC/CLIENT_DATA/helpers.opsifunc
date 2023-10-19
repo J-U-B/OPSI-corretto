@@ -5,12 +5,15 @@
 ;
 ;@author			Jens Boettge
 ;@email				jens.boettge@mpi-halle.mpg.de
-;@date				2023-02-23 10:36:00 +0100
+;@date				2023-10-19 08:57:55 +0200
 ;@copyright			AGPLv3
-;@version			1.9.1
+;@version			1.10.0
 ;==========================================================================
 ; Changelog
 ; ---------
+; v1.10.0
+; * added function productGetOnClientExt
+;
 ; v1.9.1
 ; * added header for opsi-doc
 ;
@@ -400,6 +403,55 @@ DefFunc productGetOnClient(val $product$:string) : string
 "params": [
 '[]',
 '{"clientId":"%opsiserviceUser%","productType":"LocalbootProduct","productId":"$product$"}'
+]
+;.................................................
+EndFunc
+
+
+;-------------------------------------------------------------------------
+DefFunc productGetOnClientExt(val $product$:string, $myfilter$:string) : string
+;-------------------------------------------------------------------------
+; get object(s) for the given localBoot product(s) in this client
+; with filter keys as JSON object
+; may contain wildcards ("*")
+; Valid JSON keys:
+;	targetConfiguration
+;	installationStatus
+;	actionRequest
+;	lastAction
+;	actionProgress
+;	actionResult
+;	productVersion
+;	packageVersion
+;	modificationTime
+;	actionSequence
+;	productId
+;	productType
+;	clientId
+;	type
+;	ident
+; Return value:
+;		* result of opsiServiceCall (jsonArray as string)
+;-------------------------------------------------------------------------
+	DefStringList $outStream$
+	DefVar $filter$ = '{"clientId":"%opsiserviceUser%","productType":"LocalbootProduct","productId":"' + $product$ + '"}'
+
+	if not (jsonIsObject($myfilter$))
+		; set $result$ = '{"ERROR":"1","Objects":"0"}'
+		set $result$ = 'ERROR=1'
+	else
+		for %s% in jsonAsObjectGetKeyList($myfilter$) do set $filter$ = jsonAsObjectSetStringtypeValueByKey($filter$,"%s%",jsonAsObjectGetValueByKey($myfilter$,"%s%"))
+		set $outStream$ = getReturnListFromSection("opsiServiceCall_get_productOnClient")
+		set $result$ = takeString("0", $outStream$)
+	endif
+
+;.................................................
+[opsiServiceCall_get_productOnClient]
+;.................................................
+"method": "productOnClient_getObjects"
+"params": [
+'[]',
+'$filter$'
 ]
 ;.................................................
 EndFunc

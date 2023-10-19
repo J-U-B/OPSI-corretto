@@ -1,4 +1,4 @@
-# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 17 / 20") Amazon Corretto 8 / 11 / 17 / 20
+# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 17 / 21") Amazon Corretto 8 / 11 / 17 / 21
 
 ## ToC ##
 
@@ -33,17 +33,16 @@
 ## Paketinfo ##
 
 Dieses OPSI-Paket (bzw. dessen Quellen) fuer Java-LTS-releases **Amazon Corretto 8**,
-**Amazon Corretto 11** und **Amazon Corretto 17** sowie fuer die nicht-LTS-Release
-**Amazon Corretto 20**
+**Amazon Corretto 11**, **Amazon Corretto 17** und **Amazon Corretto 21**.
 deckt das *Java Development Kit* inklusive *Runtime* fuer die jeweiligen Releases
 ab. Eine separate JRE wird nicht mehr angeboten.  
-Pakete für die Versionen **15**, **16**, **18** und **19** können zwar ebenfalls
+Pakete für die Versionen **15**, **16**, **18**, **19** und **20** können zwar ebenfalls
 erstellt werden, jedoch sind diese Versionen *end of life*; Upstream gibt es
 hierfür keine Updates mehr.  
-Waehrend Java 8 in einer 32- und 64-Bit-Version verfuegbar ist, liegt ab 
+Waehrend Java 8 in einer 32- und 64-Bit-Version verfuegbar ist, liegt ab
 Versionen 11 nur noch eine Version fuer 64 Bit vor.
 
-Teile dieser Dokumentation beziehen sich nicht ausschliesslich auf die erstellten 
+Teile dieser Dokumentation beziehen sich nicht ausschliesslich auf die erstellten
 OSPI-Pakete, sondern beruecksichtigen auch den Build-Prozess.
 
 
@@ -136,15 +135,15 @@ Die <code>SRC</code>-Verzeichnisse sind in den OPSI-Paketen nicht mehr enthalten
 
 ### Makefile-Parameter ###
 Der vorliegende Code erlaubt die Erstellung von OPSI-Paketen fuer die Corretto-Releases
-***8***, ***11***, ***17*** und *20*. Die Auswahl erfolgt ueber das entsprechende *SPEC*-File.
-Mitgeliefert werden `spec.json` (Corretto11,ProductId amazon-corretto)
-sowie `spec_corretto[8,11,17,20].json` (ProductIds jeweils mit Major-Release):
+***8***, ***11***, ***17*** und ***21****. Die Auswahl erfolgt ueber das entsprechende *SPEC*-File.
+Mitgeliefert werden `spec.json` (Corretto17,ProductId amazon-corretto)
+sowie `spec_corretto[8,11,17,20,21].json` (ProductIds jeweils mit Major-Release):
 
 > *<code>SPEC=&lt;spec_file&gt;</code>*
 
-Ohne Angabe des Parameters werden die Pakete fuer Corretto 11 erstellt.
+Ohne Angabe des Parameters werden die Pakete fuer Corretto 17 erstellt.
 
-Das Paket kann mit *"batteries included"* erstellt werden. In dem Fall erfolgt 
+Das Paket kann mit *"batteries included"* erstellt werden. In dem Fall erfolgt
 der Download der Software beim Erstellen des OPSI-Paketes und nicht erst bei
 dessen Installation:
 
@@ -389,4 +388,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2023-09-19 09:35:57 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2023-10-18 15:06:14 +0200

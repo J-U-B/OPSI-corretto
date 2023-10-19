@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-08-08 14:26:31 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-10-19 12:33:12 +0200
 ;=====================================================================
 
 DefStringList $Kill_Applications$
@@ -45,6 +45,7 @@ DefVar $INNO_Setup_Inf$
 DefVar $INNO_Uninst_Opts$
 DefVar $InstallBase$
 DefVar $InstallDir$
+DefVar $InstalledVersion$
 DefVar $Installer$
 DefVar $InstallerFile$
 DefVar $InstallerSrc$
@@ -66,6 +67,7 @@ DefVar $LogDir$
 DefVar $LogLevelDefault$
 DefVar $MainBin$
 DefVar $MinimumSpace$
+DefVar $major$
 DefVar $MSI_Features$
 DefVar $MSI_Inst_Cmd$
 DefVar $MSI_Inst_Opts$
@@ -74,9 +76,13 @@ DefVar $MSI_Uninst_Opts$
 DefVar $NSIS_Inst_Opts$
 DefVar $NSIS_Uninst_Opts$
 DefVar $NTVersion$
+DefVar $num$
 DefVar $PathToExe$
 DefVar $PathPrefix$
 DefVar $pr_DesktopLink$
+DefVar $prevInstallDir$
+DefVar $prevMajor$
+DefVar $prevProductVersionFilter$
 DefVar $Proc_Cnt$
 DefVar $Proc_Killed$
 DefVar $ProductFilter$

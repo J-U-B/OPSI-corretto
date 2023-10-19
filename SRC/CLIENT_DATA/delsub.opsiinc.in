@@ -2,15 +2,19 @@
 ; delsub.opsiinc AMAZON CORRETTO (MSI)
 ; Uninstaller type: INNO/MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2023-04-24 11:24:37 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-10-19 11:00:10 +0200
 ;=====================================================================
 
 
 ;=======================================
 [sub_delsub_main]
 ;=======================================
-Message "Removing previous version(s) of " + $ProductName$
 ShowBitmap $Img_Prepare$ $ProductName$
+if ($prevMajor$ = '')
+	Message "Removing previous version(s) of " + $ProductName$
+else
+	Message "Removing previous version(s) of " + $ProductName$ + " and " + $prevMajor$
+endif
 marktime
 
 if FileExists("%ScriptPath%\checkinstance.opsiinc")
@@ -74,6 +78,9 @@ endif
 ;=== update productOnClient information on depot server
 Message "Updating status information on depot"
 set $result$ = removeProductVerOnClientStatus($ProductFilter$, $ProductVersionFilter$)
+if not ($prevProductVersionFilter$ = '')
+	set $result$ = removeProductVerOnClientStatus($ProductFilter$, $prevProductVersionFilter$)
+endif
 
 ;=== measure time
 set $TimeDiff$ = getDiffTimeSec
@@ -112,6 +119,7 @@ EndSwitch
 
 if ($Inst_Loc$ = "")
 	set $TempList$ = splitString($Inst_Ver$, ".")
+	set $major$ = takestring(0,$TempList$)
 	if (takestring(0,$TempList$)="1") and (takestring(1,$TempList$)="8")
 		; set $Temp$ = takestring(0,$TempList$) + "." + takestring(1,$TempList$) + "." + takestring(2,$TempList$) + "_" + takestring(3,$TempList$)
 		set $Temp$ = "1.8.0_" + takestring(3,$TempList$)
@@ -171,7 +179,7 @@ endif
 [Sub_Uninstall]
 ;======================================================================
 ShowBitmap $Img_Uninstall$ $ProductName$
-Message "Uninstalling previous setup of " + $ProductName$ + " " + $Inst_Ver$
+Message "Uninstalling previous setup of " + $DisplayName$ + " " + $Inst_Ver$
 
 ;=== get uninstall directory
 sub_check_PathVar
@@ -208,8 +216,12 @@ if ($ExitCode$ = "0") and not ($Inst_Loc$ = "")
 		comment "INFO: Install directory still exists: [" + $Inst_Loc$ + "]. Trying to delete."
 		;=== try final cleanup
 		Files_del_InstallDir
-		; delete empty major directory (C:\Program Files\CorrettoXY):
+	endif
+	; delete empty major directory (C:\Program Files\CorrettoXY):
+	if ($major$ = $ProductMajor$)
 		set $result$ = PowerShellCall('$head="' + $InstallDir$ + '" ; if ($(Get-Item "$head" | Get-ChildItem -Recurse  | measure).count -eq 0 ) {Remove-Item "$head"}')
+	else
+		set $result$ = PowerShellCall('$head="' + $prevInstallDir$ + '" ; if ($(Get-Item "$head" | Get-ChildItem -Recurse  | measure).count -eq 0 ) {Remove-Item "$head"}')
 	endif
 endif
 

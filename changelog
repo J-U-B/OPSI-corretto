@@ -1,9 +1,21 @@
-amazon-corretto-(8.382.05.1|11.0.20.9.1|17.0.8.8.1|20.0.2.10.1)-22:
+amazon-corretto-(8.392.08.1|11.0.21.9.1|17.0.9.8.1|20.0.2.10.1|21.0.1.12.1)-23:
+	* product updates
+		* corretto 8  -> 8.392.08.1
+		* corretto 11 -> 11.0.21.9.1
+		* corretto 17 -> 17.0.9.8.1
+		* corretto 21 -> 21.0.1.12.1
+	* Corretto 17 LTS  is now our main line (spec.json)
+	* Corretto 20 is end of life (last planned update: October 2023)
+	* fix for o4i-git issue #9 (Erkennung der installierten Version bei Wechsel Major-Release in Main-Line)
+	* updated readme.md
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-10-19 12:08:36 +0200
+
+amazon-corretto-(8.382.05.1|11.0.20.9.1|17.0.8.8.1|20.0.2.10.1|21.0.0.35.1)-22:
 	* product updates
 		* corretto 8  -> 8.382.05.1
 		* corretto 11 -> 11.0.20.9.1
 		* corretto 17 -> 17.0.8.8.1
-		* corretto 20 -> 20.0.2.9.1
+		* corretto 20 -> 20.0.2.10.1
 	* new product:
 		* corretto 21 -> 21.0.0.35.1
 	* minor improvement in of Makefile

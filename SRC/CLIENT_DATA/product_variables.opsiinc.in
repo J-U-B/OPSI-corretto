@@ -1,19 +1,20 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2023-09-19 11:03:56 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2023-10-19 12:39:47 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
 
-Set $MAP$ 				= getProductMap
-Set $FullProductId$   	= getValue("id", $MAP$)
-Set $ProductName$     	= getValue("name", $MAP$)
-Set $Version$         	= getValue("ProductVersion", $MAP$)
-Set $ActionRequest$		= getValue("actionrequest", $MAP$)
-Set $SystemType$      	= GetSystemType
-Set $NTVersion$   		= GetMsVersionInfo
-Set $Stage$				= lower("{{STAGE}}")
+Set $MAP$               = getProductMap
+Set $FullProductId$     = getValue("id", $MAP$)
+Set $ProductName$       = getValue("name", $MAP$)
+Set $Version$           = getValue("ProductVersion", $MAP$)
+Set $ActionRequest$     = getValue("actionrequest", $MAP$)
+Set $InstalledVersion$  = getValue("installedVersion", $MAP$)
+Set $SystemType$        = GetSystemType
+Set $NTVersion$         = GetMsVersionInfo
+Set $Stage$             = lower("{{STAGE}}")
 
 requiredWinstVersion >= "4.11.6"
 
@@ -324,12 +325,44 @@ endif
 ;	EndCase
 ;	DefaultCase
 ;		Set $ProductFilter$	= ""
-;	EndCase	
+;	EndCase
 ;EndSwitch
 
 set $ProductFilter$	= "*corretto*"
 set $ProductVersionFilter$ = $ProductMajor$ + ".*"
 
+if ($StrippedProductId$ = "corretto")
+	; get current installed main line of corretto:
+	set $result$ = productGetOnClientExt('*corretto', '{"installationStatus":"installed"}')
+	set $num$ = jsonAsObjectCountElements($result$)
+	if ($num$ INT> "0")
+		comment "Found " + $num$ + " JSON object(s)."
+		if ($num$ INT> "1")
+			logWarning "Expecting only one match for installed product; found " + $num$ + "; consider the first entry only"
+		endif
+		set $prevMajor$ = jsonAsObjectGetValueByKey(jsonAsArrayGetElementByIndex($result$,"0"), "productVersion")
+	endif
+	if ($prevMajor$ = "")
+		set $prevMajor$ = $InstalledVersion$
+	endif
+	if not ($prevMajor$ = "")
+		comment "Installed Corretto main line: " + $prevMajor$
+		set $prevMajor$ = stringReplaceRegex($prevMajor$, '^([0-9]+)\..*$','$1')
+		set $prevProductVersionFilter$ = $prevMajor$ + ".*"
+		; this is not exact for previous 32 bit release:
+		set $prevInstallDir$ = "%ProgramFiles64Dir%\Corretto" + $prevMajor$ +"\"
+	else
+		logError "Failed to get installed Corretto main line version"
+	endif
+	if ($prevMajor$ = $ProductMajor$)
+		set $prevMajor$ = ''
+		set $prevProductVersionFilter$ = ''
+		comment "Previously installed main line major release matches current version"
+	endif
+else
+	set $prevMajor$ = ''
+	set $prevProductVersionFilter$ = ''
+endif
 
 ;-------------------------------------------
 ; samples for known installers
