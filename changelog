@@ -1,3 +1,13 @@
+amazon-corretto-(8.402.08.1|11.0.22.7.1|17.0.10.7.1|21.0.2.13.1)-24:
+	* product updates
+		* corretto 8  -> 8.402.08.1
+		* corretto 11 -> 11.0.22.7.1
+		* corretto 17 -> 17.0.10.7.1
+		* corretto 21 -> 21.0.2.13.1
+	* moved corretto 20 spec to legacy_spec folder
+	* refined Makefile for OPSI 4.3 (handle package format & compression)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2024-01-22 11:29:22 +0100
+
 amazon-corretto-(8.392.08.1|11.0.21.9.1|17.0.9.8.1|20.0.2.10.1|21.0.1.12.1)-23:
 	* product updates
 		* corretto 8  -> 8.392.08.1

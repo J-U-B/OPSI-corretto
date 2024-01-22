@@ -1,18 +1,18 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 2.6.0
+# Version: 3.0.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2023-09-19 09:27:29 +0200
+# 2024-01-22 11:34:55 +0100
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf install
 .DEFAULT_GOAL := help
 
-### defaults:
+### some defaults:
 DEFAULT_SPEC = spec.json
 DEFAULT_ALLINC = true
 DEFAULT_KEEPFILES = false
-DEFAULT_ARCHIVEFORMAT = cpio
+
 ### to keep the changelog inside the control set CHANGELOG_TGT to an empty string
 ### otherwise the given filename will be used:
 CHANGELOG_TGT = changelog.txt
@@ -31,7 +31,29 @@ ifeq ($(OPSI_BUILDER),)
 		$(error Error: opsi-make(package|productfile) not found!)
 	endif
 endif
-$(info * OPSI_BUILDER = $(OPSI_BUILDER))
+
+OPSI_VERSION = $(shell $(OPSI_BUILDER) -V | cut -f 1 -d " ")
+$(info * OPSI_BUILDER = $(OPSI_BUILDER) $(OPSI_VERSION))
+O_MAJOR = $(shell echo $(OPSI_VERSION) | cut -f1 -d.)
+O_MINOR = $(shell echo $(OPSI_VERSION) | cut -f2 -d.)
+O_REVNR = $(shell echo $(OPSI_VERSION) | cut -f3 -d.)
+O_VERCL = $(shell echo $$(($(O_MAJOR) * 100 + $(O_MINOR))))
+# $(info * VERCL = $(O_VERCL))
+
+### more defaults, depending on OPSI version:
+ifeq ($(shell test "$(O_VERCL)" -ge "403"; echo $$?),0)
+    $(info * OPSI >=4.3)
+	DEFAULT_ARCHIVEFORMAT = tar
+	ARCHIVE_TYPES :="[tar]"
+	DEFAULT_COMPRESSION = gz
+	COMPRESSION_TYPES :="[gz] [zstd] [bz2]"
+else
+    $(info * OPSI <4.3)
+	DEFAULT_ARCHIVEFORMAT = cpio
+	ARCHIVE_TYPES :="[cpio] [tar]"
+	DEFAULT_COMPRESSION = gzip
+	COMPRESSION_TYPES :="[gzip] [zstd]"
+endif
 
 MUSTACHE = ./SRC/TOOLS/mustache.32
 BUILD_JSON = $(BUILD_DIR)/build.json
@@ -99,14 +121,24 @@ endif
 
 ### Used archive format for OPSI package
 ARCHIVE_FORMAT ?= $(DEFAULT_ARCHIVEFORMAT)
-ARCHIVE_TYPES :="[cpio] [tar]"
 AFX := $(firstword $(ARCHIVE_FORMAT))
 AFY := $(shell echo $(AFX) | tr A-Z a-z)
 
 ifeq (,$(findstring [$(AFY)],$(ARCHIVE_TYPES)))
-	BUILD_FORMAT = cpio
+	BUILD_FORMAT := cpio
 else
-	BUILD_FORMAT = $(AFY)
+	BUILD_FORMAT := $(AFY)
+endif
+
+### Used compression for OPSI package
+COMPRESSION ?= $(DEFAULT_COMPRESSION)
+AFX := $(firstword $(COMPRESSION))
+AFY := $(shell echo $(AFX) | tr A-Z a-z)
+
+ifeq (,$(findstring [$(AFY)],$(COMPRESSION_TYPES)))
+	BUILD_COMPRESSION := $(DEFAULT_COMPRESSION)
+else
+	BUILD_COMPRESSION := $(AFY)
 endif
 
 SW_VER := $(shell grep '"O_SOFTWARE_VER"' $(SPEC)     | sed -e 's/^.*\s*:\s*\"\(.*\)\".*$$/\1/' )
@@ -150,7 +182,9 @@ var_test:
 	@echo "* Batteries included    : [$(ALLINC)] --> [$(ALLINCLUSIVE)]"
 	@echo "* Custom Name           : [$(CUSTOMNAME)]"
 	@echo "* OPSI Archive Types    : [$(ARCHIVE_TYPES)]"
-	@echo "* OPSI Archive Format   : [$(ARCHIVE_FORMAT)][$(AFX)][$(AFY)][$(AFZ)] --> $(BUILD_FORMAT)"
+	@echo "* OPSI Archive Format   : [$(ARCHIVE_FORMAT)] --> $(BUILD_FORMAT)"
+	@echo "* OPSI Compression Types: [$(COMPRESSION_TYPES)]"
+	@echo "* OPSI Compression      : [$(COMPRESSION)] --> $(BUILD_COMPRESSION)"
 	@echo "* Templates OPSI        : [$(FILES_OPSI_IN)]"
 	@echo "* Templates CLIENT_DATA : [$(FILES_IN)]"
 	@echo "* Files Expected        : [$(FILES_EXPECTED)]"
@@ -420,7 +454,7 @@ build: download pdf clean copy_from_src
 			cat changelog >> $(BUILD_DIR)/OPSI/control; \
 		fi; \
 	fi
-	
+
 	for F in $(FILES_IN); do \
 		echo "* Creating CLIENT_DATA/$$F"; \
 		rm -f $(BUILD_DIR)/CLIENT_DATA/$$F; \
