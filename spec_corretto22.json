@@ -6,7 +6,7 @@
 
 	"O_SOFTWARE"        : "corretto22",
 	"O_SOFTWARE_NAME"   : "Amazon Corretto 22",
-	"O_SOFTWARE_VER"    : "22.0.1.8.1",
+	"O_SOFTWARE_VER"    : "22.0.2.9.1",
 	"O_SOFTWARE_BUILD"  : "",
 	"O_SOFTWARE_WEBSITE": "https://aws.amazon.com/corretto/",
 	"O_SOFTWARE_DL"     : "https://corretto.aws/downloads/resources/%%VERSION%%/amazon-corretto-%%VERSION%%-windows-%%ARCH%%.msi",
