@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables AMAZON CORRETTO
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2024-04-17 10:03:38 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2024-10-23 15:05:36 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -502,6 +502,18 @@ Switch $ProductMajor$
 		endif
 	EndCase
 	Case "22"
+		Set $SpaceReqInstall$   = "350"
+		Set $SpaceReqPackage$   = "190"
+		;---------------------------------
+		;*** select MSI features
+		;---------------------------------
+		if $pr_SetEnv_JavaHome$ = "True"
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupEnvVars,FeatureSetupRegistry"'
+		else
+			Set $MSI_Features$ 	= ' ADDLOCAL="FeatureMain,FeatureSetupEnv,FeatureSetupRegistry"'
+		endif
+	EndCase
+	Case "23"
 		Set $SpaceReqInstall$   = "350"
 		Set $SpaceReqPackage$   = "190"
 		;---------------------------------
