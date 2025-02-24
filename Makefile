@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (Amazon Corretto / Java)
-# Version: 3.0.0
+# Version: 3.0.1
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2024-01-22 11:34:55 +0100
+# 2025-02-24 13:54:53 +0100
 ############################################################
 
 .PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf install
@@ -284,7 +284,7 @@ help: header
 	@echo "	o4i_test_noprefix"	
 	@echo "	all_prod"
 	@echo "	all_test"
-	@echo "	install"              - install recent package(s) on depot server
+	@echo "	install               - install recent package(s) on depot server"
 	@echo "	fix_rights            - fix rights for package directory"
 	@echo "	clean"
 	@echo "	clean_packages"

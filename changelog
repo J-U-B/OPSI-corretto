@@ -1,3 +1,15 @@
+amazon-corretto-(8.442.06.1|11.0.26.4.1|17.0.14.7.1|21.0.6.7.1|23.0.2.7.1)-26:
+	* product updates
+		* corretto 8  -> 8.442.06.1
+		* corretto 11 -> 11.0.26.4.1
+		* corretto 17 -> 17.0.14.7.1
+		* corretto 21 -> 21.0.6.7.1
+		* corretto 23 -> 23.0.2.7.1
+	* end of life
+		* corretto 22 == 22.0.2.9.1
+	* fix: make help
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2025-02-24 13:56:08 +0100
+
 amazon-corretto-(8.432.06.1|11.0.25.9.1|17.0.13.11.1|21.0.5.11.1|22.0.2.9.1|23.0.1.8.1)-25:
 	* product updates
 		* corretto 8  -> 8.432.06.1
