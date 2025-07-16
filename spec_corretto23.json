@@ -1,6 +1,6 @@
 {
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "26",
+	"O_PKG_VER"         : "27",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/${PRODUCT_ID}__opsi_package_install.log",
 
@@ -14,7 +14,7 @@
 	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-23/blob/release-%%VERSION%%/CHANGELOG.md",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto/corretto-23",
 	"O_SOFTWARE_DL_X64"	: "",
-	"O_ADVICE"          : "(n/a)",
+	"O_ADVICE"          : "Corretto 23 is end of life! Please update to a newer version. (Last release: 2025-01-21)",
 
 
 	"_":"=== conditions ===",
