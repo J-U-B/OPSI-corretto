@@ -80,6 +80,7 @@ if [ -d $CLIENT_DATA_DIR ]; then
 		REGEX="^.*${REGSW%%[0-9]*}-${REVER}-.*"
 		echo "* ${REGSW%%[0-9]*} version = '$REVER'"
 		echo "* using regex: '${REGEX}'"
+		echo "* command: find  $TMP_DIR/files/ -type f -not -iregex \"${REGEX}\""
 		find  $TMP_DIR/files/ -type f -not -iregex "${REGEX}" -exec rm -vf {} \;
 	fi
 	{{/ifdef_keepfiles}}
