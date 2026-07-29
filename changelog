@@ -1,3 +1,19 @@
+amazon-corretto-(8.502.07.1|11.0.32.9.1|17.0.20.8.1|21.0.12.8.1|25.0.4.7.1|26.0.2.10.1)-30:
+	* new o4i-Logo in icon set
+	* feat: wrapper skript to download, build, install, setup (outdated) all targets
+	* update und fix readme
+	* product update:
+		* corretto 8  -> 8.502.07.1
+		* corretto 11 -> 11.0.32.9.1
+		* corretto 17 -> 17.0.20.8.1
+		* corretto 21 -> 21.0.12.8.1
+		* corretto 25 -> 25.0.4.7.1
+		* corretto 26 -> 26.0.2.10.1
+	* moved corretto 24 spec file to legacy_spec (no new package)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2026-07-29 10:04:49 +0200
+
+
+
 amazon-corretto-(8.482.08.1|11.0.30.7.1|17.0.18.9.1|21.0.10.7.1|25.0.2.10.1|26.0.0.35.2|24.0.2.12.1)-29:
 	* corretto 21 becomes main line for opsi
 	* product update:

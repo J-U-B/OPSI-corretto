@@ -1,9 +1,9 @@
-# ![](./SRC/CLIENT_DATA/images/corretto.png "Amazon Corretto 8 / 11 / 17 / 21") Amazon Corretto 8 / 11 / 17 / 21
+# ![](./SRC/CLIENT_DATA/images/corretto_80x80.png) Amazon Corretto 8 / 11 / 17 / 21 / 25 / 26
 
 ## ToC ##
 
 * [Paketinfo](#paketinfo)
-  * [Amazon Corretto](#about-corretto)
+  * [Amazon Corretto](#about_corretto)
 * [Paket erstellen](#paket_erstellen)
   * [Voraussetzungen](#voraussetzungen)
   * [Makefile und spec.json](#makefile_und_spec)
@@ -11,6 +11,7 @@
   * [Verzeichnisstruktur](#verzeichnisstruktur)
   * [Makefile-Parameter](#makefile_parameter)
   * [spec.json](#spec_json)
+  * [Wrapper-Skript `build+install+setup_all.sh`](#build_install_setup_all)
 * [Installation](#installation)
   * [Abhaengigkeiten](#abhaengigkeiten)
 * [Allgemeines](#allgemeines)
@@ -36,9 +37,10 @@ Dieses OPSI-Paket (bzw. dessen Quellen) fuer Java-LTS-releases **Amazon Corretto
 **Amazon Corretto 11**, **Amazon Corretto 17** und **Amazon Corretto 21**.
 deckt das *Java Development Kit* inklusive *Runtime* fuer die jeweiligen Releases
 ab. Eine separate JRE wird nicht mehr angeboten.  
-Pakete für die Versionen **15**, **16**, **18**, **19** und **20** können zwar ebenfalls
-erstellt werden, jedoch sind diese Versionen *end of life*; Upstream gibt es
-hierfür keine Updates mehr.  
+Pakete für nicht-LTS-Versionen können ebenfalls erstellt werden. Dies haben
+jedoch eine kürzere Lebenszeit. (Die zugehoerigen [spec-Files](#spec_json)
+für nicht mehr unterstützte Verionen finden sich im Verzeichnis `legacy_spec`.) 
+
 Waehrend Java 8 in einer 32- und 64-Bit-Version verfuegbar ist, liegt ab
 Versionen 11 nur noch eine Version fuer 64 Bit vor.
 
@@ -183,6 +185,22 @@ sollen nur noch in <code>spec.json</code> angepasst werden. Den Rest uebernimmt 
 
 
 
+<div id="build_install_setup_all"></div>
+
+### Wrapper-Skript `build+install+setup_all.sh` ###
+
+Zur Vereinfachung der Paket-Erstellung und -Installation und zum Setzen des
+*setup*-Requests für auf den Clients veraltete Pakete, steht ein Hilfs-Skript
+zur Verfuegung: `build+install+setup_all.sh`.
+
+Unter Angabe des `make`-Tagets (z.B. _o4i_) erfolgt fuer alle von diesem Paket
+Unterstützten Corretto-Versionen (siehe ~.spec`-Files) der
+* Download der MSI-Pakete (falls noch nicht erfolgt)
+* Erstellung der OPSI-Pakete
+* Installation auf dem Depot-Server
+* Setzen des *setup*-Requests
+
+
 <div id="installation"></div>
 
 ## Installation ##
@@ -301,7 +319,7 @@ Hilfsprogramme. Diese unterliegen ihren jeweiligen Lizenzen.
 
 
 
-<div id="licAmazonCorrettoo"></div>
+<div id="licAmazonCorretto"></div>
 
 ### Amazon-Corretto-Lizenzen ###
 
@@ -388,4 +406,4 @@ weiterer freier Grafiken erstellt.
 
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2023-10-18 15:06:14 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2026-07-29 10:23:13 +0200
