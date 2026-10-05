@@ -1,4 +1,4 @@
-# ![](./SRC/CLIENT_DATA/images/corretto_80x80.png) Amazon Corretto 8 / 11 / 17 / 21 / 25 / 26
+# ![](./SRC/CLIENT_DATA/images/corretto_80x80.png) Amazon Corretto 8 / 11 / 17 / 21 / 25 / 26 / 27
 
 ## ToC ##
 

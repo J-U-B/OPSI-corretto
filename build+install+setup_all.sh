@@ -7,7 +7,7 @@
 # - setup this packages where outdated
 #
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2026-07-29
+# 2026-10-05
 #===========================================================
 
 TGT_AVAIL=(mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_prod all_test)
@@ -27,7 +27,7 @@ setup_outdated(){
 	PKG_BUILD=$(cat ${SPEC} | grep '"O_PKG_VER"'     |sed -re 's/^.*"(.+)".*$/\1/')
 	PACKAGES_FOUND=($(ls -tr1 PACKAGES/*.opsi | grep -E "${SW_NAME}_${SW_VER}-${PKG_BUILD}(~dl){0,1}.opsi$" ))
 	PKG_NUM=${#PACKAGES_FOUND[@]}
-	echo "[I]   Number of installable packages found: $(PKG_NUM)"
+	echo "[I]   Number of installable packages found: ${PKG_NUM}"
 	if [ ${PKG_NUM} -gt 0 ]; then
 		declare -a PRD=()
 		for F in ${PACKAGES_FOUND[@]}; do X=${F##PACKAGES/}; X=${X%_*}; [[ -n $X ]] && PRD+=($X) ;done
