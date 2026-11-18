@@ -1,3 +1,15 @@
+amazon-corretto-(8.514.01.1|11.0.33.1.1|17.0.21.1.2|21.0.13.1.2|25.0.5.1.2|26 = 26.0.2.11.1|27.0.1.1.4)-30:
+	* product update:
+		* corretto 8  -> 8.514.01.1
+		* corretto 11 -> 11.0.33.1.1
+		* corretto 17 -> 17.0.21.1.2
+		* corretto 21 -> 21.0.13.1.2
+		* corretto 25 -> 25.0.5.1.2
+		* corretto 27 -> 27.0.1.1.4
+	* end of life
+		* corretto 26 = 26.0.2.11.1
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2026-11-18 12:15:07 +0100
+
 amazon-corretto-(8.504.04.1|11.0.32.12.1|17.0.20.12.1|21.0.12.12.1|25.0.4.10.1|26.0.2.11.1|27.0.0.35.1)-30:
 	* fix build+install+setup_all.sh
 	* product update:

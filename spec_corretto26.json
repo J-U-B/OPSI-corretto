@@ -14,7 +14,7 @@
 	"O_SOFTWARE_CHANGES": "https://github.com/corretto/corretto-26/blob/release-%%VERSION%%/CHANGELOG.md",
 	"O_SOFTWARE_GIT"    : "https://github.com/corretto/corretto-26",
 	"O_SOFTWARE_DL_X64"	: "",
-	"O_ADVICE"          : "(n/a)",
+	"O_ADVICE"          : "Corretto 26 is end of life! Please update to a newer version. (Last release: 2026-08-18)",
 
 
 	"_":"=== conditions ===",
